@@ -1,0 +1,186 @@
+/**
+ * Tailwind @theme inline — map semantic CSS variables to Tailwind utilities.
+ *
+ * `inline` is load-bearing. Without it Tailwind resolves each theme value at
+ * build time and bakes a hex into every utility, defeating the .dark class
+ * swap. With `inline`, Tailwind emits utilities like
+ *   `bg-surface-primary { background: var(--color-surface-primary); }`
+ * and the primitive swap inside `.dark` flows through at runtime.
+ *
+ * Structure:
+ *   1. `--<namespace>-*: initial` resets — strip Tailwind's defaults so
+ *      utilities like `bg-red-500` / `shadow-elevation` / `rounded-md` resolve
+ *      only through our semantics.
+ *   2. Spacing multiplier — `p-N` / `gap-N` / `size-N` resolve via this.
+ *   3. Semantic passthrough — each token exposed as a utility.
+ */
+
+@theme inline {
+  /* ── Tailwind namespace resets ───────────────────────────────────────── */
+  --color-*: initial;
+  --shadow-*: initial;
+  --inset-shadow-*: initial;
+  --drop-shadow-*: initial;
+  --radius-*: initial;
+  --text-*: initial;
+  --z-index-*: initial;
+  --font-*: initial;
+  --font-weight-*: initial;
+  --ease-*: initial;
+  /* `--animate-*` is NOT reset. `tw-animate-css` (imported from styles.css)
+     ships keyframe bindings via --animate-in, --animate-fade-in-0,
+     --animate-zoom-in-95, --animate-slide-in-from-top-2, etc. Resetting this
+     namespace would silently break every component's open/close animation. */
+  --breakpoint-*: initial;
+  --tracking-*: initial;
+  --leading-*: initial;
+  /* --blur-* and --perspective-* intentionally NOT reset. They're
+     effect/expression utilities with no DS-level vocabulary to govern.
+     Tailwind's defaults stay live for marketing/hero/playful surfaces. */
+  --max-width-*: initial;
+  --container-*: initial;
+
+  /* ── Spacing ─────────────────────────────────────────────────────────── */
+  --spacing: 4px;
+
+  /* ── Max-Width (max-w-*) ─────────────────────────────────────────────── */
+  --max-width-xxs: var(--max-width-xxs);
+  --max-width-xs: var(--max-width-xs);
+  --max-width-sm: var(--max-width-sm);
+  --max-width-md: var(--max-width-md);
+  --max-width-lg: var(--max-width-lg);
+  --max-width-xl: var(--max-width-xl);
+  --max-width-2xl: var(--max-width-2xl);
+  --max-width-page: var(--max-width-page);
+  --max-width-prose: var(--max-width-prose);
+
+  /* ── Surface (bg-*) ──────────────────────────────────────────────────── */
+  --color-surface-primary: var(--color-surface-primary);
+  --color-surface-primary-hover: var(--color-surface-primary-hover);
+  --color-surface-secondary: var(--color-surface-secondary);
+  --color-surface-secondary-hover: var(--color-surface-secondary-hover);
+  --color-surface-tertiary: var(--color-surface-tertiary);
+  --color-surface-inverse: var(--color-surface-inverse);
+  --color-surface-overlay: var(--color-surface-overlay);
+  --color-surface-danger: var(--color-surface-danger);
+  --color-surface-success: var(--color-surface-success);
+
+  /* ── Button (bg-button-*) ───────────────────────────────────────────── */
+  --color-button-primary: var(--color-button-primary);
+  --color-button-primary-hover: var(--color-button-primary-hover);
+  --color-button-primary-danger: var(--color-button-primary-danger);
+  --color-button-primary-danger-hover: var(--color-button-primary-danger-hover);
+  --color-button-secondary: var(--color-button-secondary);
+  --color-button-secondary-hover: var(--color-button-secondary-hover);
+  --color-button-secondary-danger-hover: var(
+    --color-button-secondary-danger-hover
+  );
+  --color-button-disabled: var(--color-button-disabled);
+
+  /* ── Foreground (text-*) ─────────────────────────────────────────────── */
+  --color-on-surface-primary-default: var(--color-on-surface-primary-default);
+  --color-on-surface-primary-subtle: var(--color-on-surface-primary-subtle);
+  --color-on-surface-secondary-default: var(
+    --color-on-surface-secondary-default
+  );
+  --color-on-surface-secondary-subtle: var(--color-on-surface-secondary-subtle);
+  --color-on-surface-tertiary-default: var(--color-on-surface-tertiary-default);
+  --color-on-surface-tertiary-subtle: var(--color-on-surface-tertiary-subtle);
+  --color-on-surface-inverse-default: var(--color-on-surface-inverse-default);
+  --color-on-surface-inverse-subtle: var(--color-on-surface-inverse-subtle);
+  --color-on-surface-danger: var(--color-on-surface-danger);
+  --color-on-surface-success: var(--color-on-surface-success);
+  --color-on-button-primary: var(--color-on-button-primary);
+  --color-on-button-secondary: var(--color-on-button-secondary);
+  --color-on-button-secondary-danger: var(--color-on-button-secondary-danger);
+  --color-on-button-tertiary: var(--color-on-button-tertiary);
+  --color-on-button-tertiary-hover: var(--color-on-button-tertiary-hover);
+  --color-on-button-tertiary-danger: var(--color-on-button-tertiary-danger);
+  --color-on-button-tertiary-danger-hover: var(
+    --color-on-button-tertiary-danger-hover
+  );
+  --color-on-button-disabled: var(--color-on-button-disabled);
+
+  /* ── Stroke (border-*, ring-*, outline-*) ────────────────────────────── */
+  --color-stroke-default: var(--color-stroke-default);
+  --color-stroke-emphasis: var(--color-stroke-emphasis);
+  --color-stroke-danger: var(--color-stroke-danger);
+
+  /* ── Radius ──────────────────────────────────────────────────────────── */
+  --radius-none: var(--radius-none);
+  --radius-xs: var(--radius-xs);
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
+  --radius-2xl: var(--radius-2xl);
+  --radius-3xl: var(--radius-3xl);
+  --radius-full: var(--radius-full);
+  --radius-button: var(--radius-button);
+
+  /* ── Elevation ───────────────────────────────────────────────────────── */
+  --shadow-elevation: var(--shadow-elevation);
+
+  /* ── Typography ──────────────────────────────────────────────────────── */
+  --font-display: var(--family-display);
+  --font-header: var(--family-header);
+  --font-body: var(--family-body);
+  --font-code: var(--family-code);
+
+  --text-xs: var(--size-body-caption);
+  --text-xs--line-height: var(--line-height-body-caption);
+  --text-sm: var(--size-body-sm);
+  --text-sm--line-height: var(--line-height-body-sm);
+  --text-base: var(--size-body-lg);
+  --text-base--line-height: var(--line-height-body-lg);
+  --text-2xl: var(--size-header-sm);
+  --text-2xl--line-height: var(--line-height-header-sm);
+
+  --font-weight-regular: var(--weight-regular);
+  --font-weight-normal: var(--weight-regular);
+  --font-weight-medium: var(--weight-medium);
+  --font-weight-semibold: var(--weight-semibold);
+
+  --tracking-tight: var(--letter-spacing-tight);
+  --tracking-normal: var(--letter-spacing-default);
+  --tracking-loose: var(--letter-spacing-loose);
+
+  /* ── Layout ──────────────────────────────────────────────────────────── */
+  --z-index-base: var(--z-base);
+  --z-index-raised: var(--z-raised);
+  --z-index-dropdown: var(--z-dropdown);
+  --z-index-sticky: var(--z-sticky);
+  --z-index-fixed: var(--z-fixed);
+  --z-index-overlay: var(--z-overlay);
+  --z-index-modal: var(--z-modal);
+  --z-index-popover: var(--z-popover);
+  --z-index-toast: var(--z-toast);
+
+  /* Breakpoints use literal pixel values rather than var() references —
+     Tailwind v4 emits `@media (width >= var(--breakpoint-sm))` when
+     breakpoints point at runtime CSS vars, which neither Lightning CSS nor
+     Turbopack's CSS parser can parse. Breakpoints are also a DS invariant
+     so baking literals here is correct. */
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
+
+  /* ── Container queries (@container, @sm:, @md:, ...) ─────────────────── */
+  --container-xs: var(--max-width-xs);
+  --container-sm: var(--max-width-sm);
+  --container-md: var(--max-width-md);
+  --container-lg: var(--max-width-lg);
+  --container-xl: var(--max-width-xl);
+  --container-2xl: var(--max-width-2xl);
+
+  /* ── Motion ──────────────────────────────────────────────────────────── */
+  --duration-fast: var(--duration-fast);
+  --duration-base: var(--duration-base);
+  --duration-slow: var(--duration-slow);
+  --ease-enter: var(--ease-enter);
+  --ease-exit: var(--ease-exit);
+  --ease-move: var(--ease-move);
+  --ease-linear: var(--ease-linear);
+}

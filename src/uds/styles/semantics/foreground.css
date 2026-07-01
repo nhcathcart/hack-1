@@ -1,0 +1,66 @@
+/**
+ * Semantic foreground tokens — text and icon color.
+ *
+ * Surface-coupled: every neutral and status surface has a paired foreground
+ * pair (-default + -subtle) that guarantees contrast on that surface. Buttons
+ * use the on-button-* pair instead.
+ *
+ *   bg-surface-primary    + text-on-surface-primary-{default,subtle}
+ *   bg-surface-secondary  + text-on-surface-secondary-{default,subtle}
+ *   bg-surface-tertiary   + text-on-surface-tertiary-{default,subtle}
+ *   bg-surface-inverse    + text-on-surface-inverse-{default,subtle}
+ *   bg-surface-danger     + text-on-surface-danger
+ *   bg-surface-success    + text-on-surface-success
+ *   bg-button-primary             + text-on-button-primary
+ *   bg-button-primary-danger      + text-on-button-primary
+ *   bg-button-secondary           + text-on-button-secondary
+ *   bg-button-secondary + danger  + text-on-button-secondary-danger
+ *   (transparent) tertiary        + text-on-button-tertiary{,-hover,-danger,-danger-hover}
+ *   bg-button-disabled            + text-on-button-disabled
+ *
+ * Dark mode swaps which primitive the alias resolves to.
+ */
+
+:root {
+  --color-on-surface-primary-default: var(--palette-neutral-850);
+  --color-on-surface-primary-subtle: var(--palette-neutral-500);
+  --color-on-surface-secondary-default: var(--palette-neutral-850);
+  --color-on-surface-secondary-subtle: var(--palette-neutral-600);
+  --color-on-surface-tertiary-default: var(--palette-neutral-850);
+  --color-on-surface-tertiary-subtle: var(--palette-neutral-600);
+  --color-on-surface-inverse-default: var(--palette-warm-neutral-100);
+  --color-on-surface-inverse-subtle: var(--palette-warm-neutral-400);
+  --color-on-surface-danger: var(--palette-danger-700);
+  --color-on-surface-success: var(--palette-success-700);
+
+  --color-on-button-primary: var(--palette-neutral-0);
+  --color-on-button-secondary: var(--palette-neutral-850);
+  --color-on-button-secondary-danger: var(--palette-danger-700);
+  --color-on-button-tertiary: var(--palette-neutral-850);
+  --color-on-button-tertiary-hover: var(--palette-neutral-500);
+  --color-on-button-tertiary-danger: var(--palette-danger-700);
+  --color-on-button-tertiary-danger-hover: var(--palette-danger-500);
+  --color-on-button-disabled: var(--palette-neutral-400);
+}
+
+.dark {
+  --color-on-surface-primary-default: var(--palette-neutral-0);
+  --color-on-surface-primary-subtle: var(--palette-neutral-400);
+  --color-on-surface-secondary-default: var(--palette-neutral-0);
+  --color-on-surface-secondary-subtle: var(--palette-neutral-400);
+  --color-on-surface-tertiary-default: var(--palette-neutral-0);
+  --color-on-surface-tertiary-subtle: var(--palette-neutral-300);
+  --color-on-surface-inverse-default: var(--palette-neutral-850);
+  --color-on-surface-inverse-subtle: var(--palette-neutral-700);
+  --color-on-surface-danger: var(--palette-danger-200);
+  --color-on-surface-success: var(--palette-success-200);
+
+  --color-on-button-primary: var(--palette-neutral-850);
+  --color-on-button-secondary: var(--palette-neutral-0);
+  --color-on-button-secondary-danger: var(--palette-danger-200);
+  --color-on-button-tertiary: var(--palette-neutral-0);
+  --color-on-button-tertiary-hover: var(--palette-neutral-400);
+  --color-on-button-tertiary-danger: var(--palette-danger-200);
+  --color-on-button-tertiary-danger-hover: var(--palette-danger-400);
+  --color-on-button-disabled: var(--palette-neutral-600);
+}

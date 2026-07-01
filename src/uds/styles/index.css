@@ -1,0 +1,19 @@
+/**
+ * Token system entry — imports ordered so primitives resolve before semantics,
+ * and semantics resolve before Tailwind's @theme inline references them.
+ *
+ * Consumers almost never import this file directly; they import
+ * `@the-kaizen-labs/universal-design-system/styles.css` which wraps this
+ * entry with Tailwind + app-wide base layer rules.
+ */
+
+/* 1. Raw values — hex ramps, numeric scales. Reference nothing. */
+@import "./primitives.css";
+
+/* 2. Named aliases + composite `.text-style-*` classes.
+      Reference ONLY primitives. */
+@import "./semantics.css";
+
+/* 3. Tailwind @theme inline mapping — must come after semantics so its
+      var() references resolve. */
+@import "./theme.css";

@@ -1,0 +1,16 @@
+/**
+ * Semantic radius tokens — corner rounding scale.
+ */
+
+:root {
+  --radius-none: var(--scale-radius-0);
+  --radius-xs: var(--scale-radius-2);
+  --radius-sm: var(--scale-radius-4);
+  --radius-md: var(--scale-radius-6);
+  --radius-lg: var(--scale-radius-8);
+  --radius-xl: var(--scale-radius-12);
+  --radius-2xl: var(--scale-radius-16);
+  --radius-3xl: var(--scale-radius-24);
+  --radius-full: var(--scale-radius-full);
+  --radius-button: var(--scale-radius-full);
+}

@@ -1,0 +1,55 @@
+/**
+ * Semantic layout tokens — z-index, border widths, opacity, motion, breakpoints.
+ *
+ * Z-index: named slots prevent stacking-context arms race.
+ *   base < raised < dropdown < sticky < fixed < overlay < modal < popover < toast.
+ *
+ * Border widths: two steps (default, thick) — consumers pick by intent, not px.
+ *
+ * Opacity: integer scale matches Tailwind's --opacity convention.
+ *
+ * Motion: duration + easing named per intent (fast, base, slow; enter/exit/move).
+ */
+
+:root {
+  /* z-index */
+  --z-base: 0;
+  --z-raised: 10;
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-fixed: 300;
+  --z-overlay: 400;
+  --z-modal: 500;
+  --z-popover: 600;
+  --z-toast: 700;
+
+  /* Border widths */
+  --border-0: 0;
+  --border-default: 1px;
+  --border-thick: 2px;
+
+  /* Opacity */
+  --opacity-0: 0;
+  --opacity-25: 0.25;
+  --opacity-50: 0.5;
+  --opacity-75: 0.75;
+  --opacity-100: 1;
+
+  /* Motion — duration */
+  --duration-fast: 120ms;
+  --duration-base: 200ms;
+  --duration-slow: 320ms;
+
+  /* Motion — easing */
+  --ease-enter: cubic-bezier(0, 0, 0.2, 1);
+  --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+  --ease-move: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-linear: linear;
+
+  /* Breakpoints — exposed so consumers can use Tailwind's @container/md syntax */
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
+}

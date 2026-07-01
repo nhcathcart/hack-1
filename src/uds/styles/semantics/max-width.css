@@ -1,0 +1,29 @@
+/**
+ * Semantic max-width scale — the DS's single vocabulary for content widths.
+ *
+ * Consumed through Tailwind's `--max-width-*` namespace, which is the
+ * highest-priority slot for `max-w-*` utility resolution (priority order is
+ * `--max-width → --spacing → --container`). We reset `--container-*` to
+ * `initial` and the `--spacing` layer is a numeric multiplier with no named
+ * rungs, so `--max-width-*` is the only namespace that can resolve
+ * `max-w-<name>` — removing or missing an entry here makes the utility
+ * render nothing.
+ *
+ * Scale spans from tooltip-small to page-container top-out. `prose` is
+ * reading-width (65ch) rather than pixel-based; every other token is px so
+ * the scale is predictable regardless of consumer root font size.
+ *
+ * `page` is the DS-intentional page-container cap.
+ */
+
+:root {
+  --max-width-xxs: 100px; /* safety-net cap; tiny chips, icon-only hit targets */
+  --max-width-xs: 320px; /* tooltip, pill, compact helper text */
+  --max-width-sm: 480px; /* narrow input, narrow dialog, inline notice */
+  --max-width-md: 640px; /* standard dialog, form column, content block */
+  --max-width-lg: 768px; /* wide dialog, primary content column */
+  --max-width-xl: 1024px; /* spacious content, marketing block */
+  --max-width-2xl: 1280px; /* wide content, dashboard row */
+  --max-width-page: 1440px; /* page container top-out */
+  --max-width-prose: 65ch; /* reading-width text */
+}

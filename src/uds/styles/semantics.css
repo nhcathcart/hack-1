@@ -1,0 +1,21 @@
+/**
+ * Semantics bundle — aliases (surface/foreground/stroke/radius/typography/
+ * shadow/layout) + composite `.text-style-*` classes. References primitive
+ * variables, so ./primitives.css (or equivalent declarations) must be
+ * loaded first.
+ *
+ * No spacing semantic: spacing is a single `--spacing: 4px` multiplier in
+ * theme.css and Tailwind v4 resolves every p-N / gap-N / size-N class from
+ * it directly.
+ */
+
+@import "./semantics/surface.css";
+@import "./semantics/button.css";
+@import "./semantics/foreground.css";
+@import "./semantics/stroke.css";
+@import "./semantics/radius.css";
+@import "./semantics/max-width.css";
+@import "./semantics/typography.css";
+@import "./semantics/shadow.css";
+@import "./semantics/layout.css";
+@import "./semantics/text-styles.css";

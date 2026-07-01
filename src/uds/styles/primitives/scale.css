@@ -1,0 +1,45 @@
+/**
+ * Primitive scales — raw numeric radius / text-size values.
+ *
+ * These are the underlying scale rungs that named semantic tokens (--radius-md,
+ * --text-base) reference via var(...). Consumers rarely touch these directly;
+ * the semantics layer is the stable API.
+ *
+ * No spacing scale — spacing is a single `--spacing: 4px` multiplier in
+ * theme.css; Tailwind resolves every p-N / gap-N directly from it.
+ *
+ * No dark-mode variant — scales are structural, not thematic.
+ */
+
+:root {
+  /* Radius scale */
+  --scale-radius-0: 0;
+  --scale-radius-2: 2px;
+  --scale-radius-4: 4px;
+  --scale-radius-6: 6px;
+  --scale-radius-8: 8px;
+  --scale-radius-12: 12px;
+  --scale-radius-16: 16px;
+  --scale-radius-24: 24px;
+  --scale-radius-full: 9999px;
+
+  /* Text-size scale */
+  --scale-text-10: 10px;
+  --scale-text-12: 12px;
+  --scale-text-14: 14px;
+  --scale-text-16: 16px;
+  --scale-text-18: 18px;
+  --scale-text-20: 20px;
+  --scale-text-24: 24px;
+  --scale-text-30: 30px;
+  --scale-text-32: 32px;
+  --scale-text-36: 36px;
+  --scale-text-40: 40px;
+  --scale-text-42: 42px;
+  --scale-text-48: 48px;
+  --scale-text-54: 54px;
+  --scale-text-56: 56px;
+  --scale-text-60: 60px;
+  --scale-text-80: 80px;
+  --scale-text-120: 120px;
+}

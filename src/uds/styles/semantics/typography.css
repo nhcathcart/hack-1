@@ -1,0 +1,69 @@
+/**
+ * Semantic typography tokens — families, weights, sizes, line-heights, tracking.
+ *
+ * Sizes and line-heights pair per Canopy spec: each named scale has matching
+ * --size-X and --line-height-X tokens. Composite text-styles in text-styles.css
+ * compose family + weight + size + line-height + tracking.
+ *
+ * Display, header-lg, and body-lg line-height shrink on mobile (< 768px) via
+ * the @media block below. Everything else is fixed across breakpoints.
+ *
+ * GT Planar must be loaded by the consumer app — UDS declares the family name
+ * but does not ship the font file.
+ */
+
+:root {
+  --family-display: "GT Planar", Georgia, serif;
+  --family-header: "GT Planar", Georgia, serif;
+  --family-body: Inter, system-ui, -apple-system, sans-serif;
+  --family-code: "JetBrains Mono", ui-monospace, monospace;
+
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+
+  --size-display-lg: var(--scale-text-80);
+  --size-display-md: var(--scale-text-54);
+  --size-display-sm: var(--scale-text-42);
+  --size-header-lg: var(--scale-text-36);
+  --size-header-md: var(--scale-text-32);
+  --size-header-sm: var(--scale-text-24);
+  --size-body-lg: var(--scale-text-16);
+  --size-body-sm: var(--scale-text-14);
+  --size-body-caption: var(--scale-text-12);
+  --size-body-label: var(--scale-text-12);
+  --size-body-overline: var(--scale-text-10);
+  --size-body-code: var(--scale-text-14);
+
+  --line-height-display-lg: var(--scale-text-80);
+  --line-height-display-md: var(--scale-text-54);
+  --line-height-display-sm: var(--scale-text-42);
+  --line-height-header-lg: var(--scale-text-36);
+  --line-height-header-md: var(--scale-text-32);
+  --line-height-header-sm: var(--scale-text-24);
+  --line-height-body-lg: 19px;
+  --line-height-body-sm: 17px;
+  --line-height-body-caption: var(--scale-text-14);
+  --line-height-body-label: var(--scale-text-14);
+  --line-height-body-overline: var(--scale-text-10);
+  --line-height-body-code: var(--scale-text-14);
+
+  --letter-spacing-tight: -1px;
+  --letter-spacing-default: 0;
+  --letter-spacing-loose: 1px;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --size-display-lg: var(--scale-text-120);
+    --size-display-md: var(--scale-text-80);
+    --size-display-sm: var(--scale-text-56);
+    --size-header-lg: var(--scale-text-40);
+
+    --line-height-display-lg: var(--scale-text-120);
+    --line-height-display-md: var(--scale-text-80);
+    --line-height-display-sm: var(--scale-text-56);
+    --line-height-header-lg: var(--scale-text-40);
+    --line-height-body-lg: 20px;
+  }
+}

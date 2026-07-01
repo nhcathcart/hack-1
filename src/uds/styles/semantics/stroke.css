@@ -1,0 +1,20 @@
+/**
+ * Semantic stroke tokens — borders, rings, outlines.
+ *
+ * CSS-variable names use `stroke-*` (rather than `border-*`) to keep the
+ * Tailwind `border-N` width namespace and our color namespace distinct: the
+ * cn() merge layer routes `border-stroke-*` and `ring-stroke-*` into Tailwind's
+ * border-color / ring-color groups so width and color utilities never collide.
+ */
+
+:root {
+  --color-stroke-default: var(--palette-warm-neutral-200);
+  --color-stroke-emphasis: var(--palette-neutral-850);
+  --color-stroke-danger: var(--palette-danger-700);
+}
+
+.dark {
+  --color-stroke-default: var(--palette-cool-neutral-700);
+  --color-stroke-emphasis: var(--palette-cool-neutral-100);
+  --color-stroke-danger: var(--palette-danger-400);
+}

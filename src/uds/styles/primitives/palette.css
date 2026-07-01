@@ -1,0 +1,221 @@
+/**
+ * Primitive palette — raw color ramps and scrim.
+ *
+ * Two coexisting families:
+ *
+ *   - Canopy ramps (neutral, warm-neutral, cool-neutral, danger, success,
+ *     alpha) mirror the Figma Primitive collection 1:1. Theme-independent:
+ *     semantics swap which primitive they alias for dark mode rather than
+ *     overriding the primitive itself.
+ *
+ *   - Kaizen ramps (gray, blue, red, green, amber, sky, purple, scrim)
+ *     back the older semantics that haven't been re-aliased to Canopy. They
+ *     carry .dark overrides because their semantics are theme-aware at the
+ *     primitive level.
+ *
+ * Tailwind never sees these variables — they live at :root, never inside
+ * @theme. Only semantic tokens enter @theme inline and generate utilities.
+ */
+
+:root {
+  color-scheme: light;
+
+  /* Neutral — Tailwind neutral plus 0 / 850 / 1000.
+   * 850 = #1e1e1e is the Canopy brand near-black. */
+  --palette-neutral-0: #ffffff;
+  --palette-neutral-50: #fafafa;
+  --palette-neutral-100: #f5f5f5;
+  --palette-neutral-200: #e5e5e5;
+  --palette-neutral-300: #d4d4d4;
+  --palette-neutral-400: #a3a3a3;
+  --palette-neutral-500: #737373;
+  --palette-neutral-600: #525252;
+  --palette-neutral-700: #404040;
+  --palette-neutral-800: #262626;
+  --palette-neutral-850: #1e1e1e;
+  --palette-neutral-900: #171717;
+  --palette-neutral-950: #0a0a0a;
+  --palette-neutral-1000: #000000;
+
+  /* Warm-neutral — Tailwind stone. Light-mode surfaces. */
+  --palette-warm-neutral-50: #fafaf9;
+  --palette-warm-neutral-100: #f5f5f4;
+  --palette-warm-neutral-200: #e7e5e4;
+  --palette-warm-neutral-300: #d6d3d1;
+  --palette-warm-neutral-400: #a8a29e;
+  --palette-warm-neutral-500: #78716c;
+  --palette-warm-neutral-600: #57534e;
+  --palette-warm-neutral-700: #44403c;
+  --palette-warm-neutral-800: #292524;
+  --palette-warm-neutral-900: #1c1917;
+  --palette-warm-neutral-950: #0c0a09;
+
+  /* Cool-neutral — Tailwind zinc. Dark-mode surfaces. */
+  --palette-cool-neutral-50: #fafafa;
+  --palette-cool-neutral-100: #f4f4f5;
+  --palette-cool-neutral-200: #e4e4e7;
+  --palette-cool-neutral-300: #d4d4d8;
+  --palette-cool-neutral-400: #a1a1aa;
+  --palette-cool-neutral-500: #71717a;
+  --palette-cool-neutral-600: #52525b;
+  --palette-cool-neutral-700: #3f3f46;
+  --palette-cool-neutral-800: #27272a;
+  --palette-cool-neutral-900: #18181b;
+  --palette-cool-neutral-950: #09090b;
+
+  /* Danger — Tailwind red. */
+  --palette-danger-50: #fef2f2;
+  --palette-danger-100: #fee2e2;
+  --palette-danger-200: #fecaca;
+  --palette-danger-300: #fca5a5;
+  --palette-danger-400: #f87171;
+  --palette-danger-500: #ef4444;
+  --palette-danger-600: #dc2626;
+  --palette-danger-700: #b91c1c;
+  --palette-danger-800: #991b1b;
+  --palette-danger-900: #7f1d1d;
+  --palette-danger-950: #450a0a;
+
+  /* Success — Tailwind emerald. */
+  --palette-success-50: #ecfdf5;
+  --palette-success-100: #d1fae5;
+  --palette-success-200: #a7f3d0;
+  --palette-success-300: #6ee7b7;
+  --palette-success-400: #34d399;
+  --palette-success-500: #10b981;
+  --palette-success-600: #059669;
+  --palette-success-700: #047857;
+  --palette-success-800: #065f46;
+  --palette-success-900: #064e3b;
+  --palette-success-950: #022c22;
+
+  /* Alpha — scrim tints that compose elevation. Both are dark (real-world
+     shadows are always darker than the surrounding surface, even on a dark
+     canvas); the alpha differs so light mode gets a soft 5% grey halo and
+     dark mode gets a 15% halo that reads as elevation against the near-black
+     surface without overwhelming it. */
+  --palette-alpha-on-light: rgb(0 0 0 / 0.05);
+  --palette-alpha-on-dark: rgb(0 0 0 / 0.15);
+
+  /* Gray — neutrals */
+  --palette-gray-0: #ffffff;
+  --palette-gray-50: #f7f7f7;
+  --palette-gray-100: #f2f2f2;
+  --palette-gray-200: #ecf1f4;
+  --palette-gray-300: #d9d9d9;
+  --palette-gray-400: #a6a6a6;
+  --palette-gray-500: #737373;
+  --palette-gray-600: #5a5a5a;
+  --palette-gray-700: #404040;
+  --palette-gray-900: #1a1a1a;
+
+  /* Blue — teal primary (#0d5370 anchor) */
+  --palette-blue-50: #ecf1f4;
+  --palette-blue-100: #d4e1e8;
+  --palette-blue-500: #3d758d;
+  --palette-blue-600: #0d5370;
+  --palette-blue-700: #0a4259;
+  --palette-blue-800: #083445;
+
+  /* Red — destructive (#c23333 anchor) */
+  --palette-red-50: #fce8e8;
+  --palette-red-100: #f8c9c9;
+  --palette-red-500: #d14545;
+  --palette-red-600: #c23333;
+  --palette-red-700: #a02828;
+  --palette-red-800: #7d1f1f;
+
+  /* Green — success (#267d63 anchor) */
+  --palette-green-50: #e6f4ee;
+  --palette-green-100: #c7e8d9;
+  --palette-green-500: #3a9b7c;
+  --palette-green-600: #2e8a6d;
+  --palette-green-700: #267d63;
+  --palette-green-800: #1c5e4a;
+
+  /* Amber — warning (Tailwind defaults) */
+  --palette-amber-50: #fffbeb;
+  --palette-amber-100: #fef3c7;
+  --palette-amber-400: #fbbf24;
+  --palette-amber-500: #f59e0b;
+  --palette-amber-600: #d97706;
+  --palette-amber-700: #b45309;
+  --palette-amber-800: #92400e;
+  --palette-amber-900: #78350f;
+
+  /* Sky — info (Tailwind defaults) */
+  --palette-sky-50: #f0f9ff;
+  --palette-sky-100: #e0f2fe;
+  --palette-sky-600: #0284c7;
+  --palette-sky-700: #0369a1;
+  --palette-sky-800: #075985;
+
+  /* Purple — visited link */
+  --palette-purple-600: #9333ea;
+
+  /* Scrim — theme-independent; overlays always darken content. */
+  --palette-scrim: rgba(0, 0, 0, 0.2);
+}
+
+.dark {
+  color-scheme: dark;
+
+  /* Gray — inverted for dark surfaces + light text */
+  --palette-gray-0: #0d0d0d;
+  --palette-gray-50: #1a1a1a;
+  --palette-gray-100: #2b2b2b;
+  --palette-gray-200: #404040;
+  --palette-gray-300: #5a5a5a;
+  --palette-gray-400: #737373;
+  --palette-gray-500: #a6a6a6;
+  --palette-gray-600: #d9d9d9;
+  --palette-gray-700: #ecf1f4;
+  --palette-gray-900: #f7f7f7;
+
+  /* Blue — lifted (#6b95a6 anchor) for dark-surface legibility */
+  --palette-blue-50: #083445;
+  --palette-blue-100: #0a4259;
+  --palette-blue-500: #5584a1;
+  --palette-blue-600: #6b95a6;
+  --palette-blue-700: #8aaebc;
+  --palette-blue-800: #a8c1d0;
+
+  /* Red — lifted for dark-mode legibility */
+  --palette-red-50: #3b0f0f;
+  --palette-red-100: #5c1717;
+  --palette-red-500: #d85858;
+  --palette-red-600: #e47777;
+  --palette-red-700: #efa5a5;
+  --palette-red-800: #f8c9c9;
+
+  /* Green — lifted */
+  --palette-green-50: #082019;
+  --palette-green-100: #123d31;
+  --palette-green-500: #47ab7f;
+  --palette-green-600: #63bf94;
+  --palette-green-700: #95d5b7;
+  --palette-green-800: #bbead4;
+
+  /* Amber — warning surfaces stay warm/vivid in dark mode */
+  --palette-amber-50: #451a03;
+  --palette-amber-100: #78350f;
+  --palette-amber-400: #d97706;
+  --palette-amber-500: #f59e0b;
+  --palette-amber-600: #fbbf24;
+  --palette-amber-700: #fcd34d;
+  --palette-amber-800: #fde68a;
+  --palette-amber-900: #fef3c7;
+
+  /* Sky — lifted */
+  --palette-sky-50: #082f49;
+  --palette-sky-100: #0c4a6e;
+  --palette-sky-600: #38bdf8;
+  --palette-sky-700: #7dd3fc;
+  --palette-sky-800: #bae6fd;
+
+  /* Purple — lifted visited-link */
+  --palette-purple-600: #c084fc;
+
+  /* Scrim — identical to light mode. */
+  --palette-scrim: rgba(0, 0, 0, 0.2);
+}

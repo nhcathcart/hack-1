@@ -1,0 +1,35 @@
+/**
+ * Semantic surface tokens — what components paint on their "background" slot.
+ *
+ * Eight neutral and status surfaces. Every value aliases a primitive via var().
+ * Dark mode swaps the primitive families:
+ *   - Light: warm-neutral (stone) for neutrals; danger/success status tints
+ *   - Dark:  cool-neutral (zinc) for neutrals; danger/success status tints
+ *
+ * Pair each surface with its on-* foreground from foreground.css to keep
+ * contrast intact.
+ */
+
+:root {
+  --color-surface-primary: var(--palette-neutral-0);
+  --color-surface-primary-hover: var(--palette-warm-neutral-100);
+  --color-surface-secondary: var(--palette-warm-neutral-100);
+  --color-surface-secondary-hover: var(--palette-warm-neutral-200);
+  --color-surface-tertiary: var(--palette-warm-neutral-200);
+  --color-surface-inverse: var(--palette-neutral-850);
+  --color-surface-overlay: var(--palette-scrim);
+  --color-surface-danger: var(--palette-danger-50);
+  --color-surface-success: var(--palette-success-50);
+}
+
+.dark {
+  --color-surface-primary: var(--palette-cool-neutral-900);
+  --color-surface-primary-hover: var(--palette-cool-neutral-800);
+  --color-surface-secondary: var(--palette-cool-neutral-800);
+  --color-surface-secondary-hover: var(--palette-cool-neutral-700);
+  --color-surface-tertiary: var(--palette-cool-neutral-700);
+  --color-surface-inverse: var(--palette-neutral-0);
+  --color-surface-overlay: var(--palette-scrim);
+  --color-surface-danger: var(--palette-danger-900);
+  --color-surface-success: var(--palette-success-900);
+}

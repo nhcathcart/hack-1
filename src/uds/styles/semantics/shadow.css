@@ -1,0 +1,18 @@
+/**
+ * Semantic shadow tokens — single elevation primitive.
+ *
+ * Two-layer drop shadow with negative spread: the shadow hugs the element
+ * and drops downward, suggesting a light source above.
+ */
+
+:root {
+  --shadow-elevation:
+    0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+/* Dark mode intentionally inherits the light value until the white-scrim
+ * variant lands; the .dark block is kept so future tuning has a home. */
+.dark {
+  --shadow-elevation:
+    0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}

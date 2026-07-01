@@ -1,0 +1,8 @@
+/**
+ * Primitives bundle — raw values (hex palette ramps, numeric scales).
+ * Consumers importing this alone get the primitive layer only; they must
+ * still provide their own semantic aliasing + Tailwind @theme wiring.
+ */
+
+@import "./primitives/palette.css";
+@import "./primitives/scale.css";

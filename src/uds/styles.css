@@ -1,0 +1,170 @@
+/*
+ * UDS single canonical entry.
+ *
+ * CONTRACT: every consumer (storybook, external apps) MUST place
+ * `@import "tailwindcss";` BEFORE importing this file:
+ *
+ *     @import "tailwindcss";
+ *     @import "@the-kaizen-labs/universal-design-system/styles.css";
+ *
+ * This file deliberately does NOT re-import tailwindcss. Under pnpm
+ * workspace / `link:` / `file:` installs (our inner dev loop), PostCSS
+ * resolves `@import "tailwindcss"` relative to this file's real path, which
+ * lives inside the taproot package dir. Taproot doesn't carry its own copy
+ * of tailwindcss — it's a peerDependency the consumer brings — so resolution
+ * walks up from taproot's dist and fails. The Tailwind runtime's "repeat
+ * imports are idempotent" rule runs AFTER resolution, so idempotency can't
+ * save us; the resolver throws first.
+ *
+ * Taproot declares `tailwindcss` as a peerDependency to make the contract
+ * explicit at install time. See README §2 ("One CSS import") for the full
+ * consumer setup, including the `@source` glob.
+ */
+@import "tw-animate-css";
+@import "./styles/index.css";
+
+/* Dark mode: class-based only, never auto-activates from system preference.
+   Consumers opt in by toggling `.dark` on an ancestor (usually <html>). */
+@variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  /* Default body to the primary surface so consumers get a coherent canvas
+     out of the box — and so toggling `.dark` swaps the canvas in addition to
+     component surfaces. Without this, Storybook (and any consumer that
+     forgets to set its own body bg) renders dark-mode components on a white
+     browser canvas, masking dark-mode-only visual bugs. Consumers that want
+     a different page background can override this rule in their own CSS,
+     which loads after the UDS entry. */
+  body {
+    background-color: var(--color-surface-primary);
+    color: var(--color-on-surface-primary-default);
+    font-family: var(--family-body);
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+
+  /* Hide the browser's native search clear button; we provide our own via
+     SearchInput's clear button. Without this, Chrome/Safari render a second X. */
+  input[type="search"]::-webkit-search-cancel-button,
+  input[type="search"]::-webkit-search-decoration {
+    -webkit-appearance: none;
+    appearance: none;
+  }
+}
+
+/* Scroll fade — fades the leading + trailing edges of a scrollable container
+   in proportion to scroll position. Uses CSS scroll-driven animations; falls
+   back to no-fade on browsers that don't support `animation-timeline: scroll`
+   (notably older Safari). Standardized to a 3rem fade across the system —
+   used in Dialog body, Drawer body, and ScrollArea viewport. */
+@property --scroll-fade-top {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0rem;
+}
+
+@property --scroll-fade-bottom {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0rem;
+}
+
+@property --scroll-fade-left {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0rem;
+}
+
+@property --scroll-fade-right {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0rem;
+}
+
+@keyframes scroll-fade-y {
+  0% {
+    --scroll-fade-top: 0rem;
+  }
+  10%,
+  100% {
+    --scroll-fade-top: 3rem;
+  }
+  0%,
+  90% {
+    --scroll-fade-bottom: 3rem;
+  }
+  100% {
+    --scroll-fade-bottom: 0rem;
+  }
+}
+
+@keyframes scroll-fade-x {
+  0% {
+    --scroll-fade-left: 0rem;
+  }
+  10%,
+  100% {
+    --scroll-fade-left: 3rem;
+  }
+  0%,
+  90% {
+    --scroll-fade-right: 3rem;
+  }
+  100% {
+    --scroll-fade-right: 0rem;
+  }
+}
+
+.scroll-fade-y {
+  mask: linear-gradient(
+    to bottom,
+    #0000,
+    #000 var(--scroll-fade-top) calc(100% - var(--scroll-fade-bottom)),
+    #0000
+  );
+  animation: scroll-fade-y linear;
+  animation-timeline: scroll(self block);
+}
+
+.scroll-fade-x {
+  mask: linear-gradient(
+    to right,
+    #0000,
+    #000 var(--scroll-fade-left) calc(100% - var(--scroll-fade-right)),
+    #0000
+  );
+  animation: scroll-fade-x linear;
+  animation-timeline: scroll(self inline);
+}
+
+/* Auto-save indicator — fades the "Saved" pill in (~8%) and out (~92%)
+   over a 1.8s lifecycle. The hook (`useAutoSaveStatus`) increments a
+   nonce on every transition; consumers pass it as the React `key` so
+   the animation reliably replays on rapid sequential successes. */
+@keyframes saved {
+  0% {
+    opacity: 0;
+  }
+  8.3% {
+    opacity: 1;
+  }
+  91.7% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@utility animate-saved {
+  animation: saved 1.8s ease-out forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-saved {
+    animation: none;
+  }
+}

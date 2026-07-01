@@ -1,0 +1,219 @@
+/**
+ * Text-style composite classes — ready-to-apply className composites.
+ *
+ * Composites live in @layer components so single-property utilities
+ * (font-medium, text-sm, leading-6) override individual properties via the
+ * CSS cascade without specificity fights.
+ *
+ * Each composite reads every property through a per-variant CSS custom
+ * property with the default as the var() fallback:
+ *
+ *     font-size: var(--text-style-body-sm-size, var(--size-body-sm));
+ *
+ * Consumers override a composite by assigning the named custom property at
+ * :root (or any ancestor) — no class redeclaration, no @layer juggling:
+ *
+ *     :root {
+ *       --text-style-body-sm-size: 14px;
+ *       --text-style-body-sm-leading: 120%;
+ *     }
+ *
+ * Naming convention: `--text-style-<variant>-<property>` where <property> ∈
+ * { font, size, weight, leading, tracking, transform }. These names are
+ * write-only for consumers — nothing inside the package reads them back.
+ */
+
+@layer components {
+  /* Display — hero / marketing / section openers */
+  .text-style-display-lg {
+    font-family: var(--text-style-display-lg-font, var(--family-display));
+    font-size: var(--text-style-display-lg-size, var(--size-display-lg));
+    font-weight: var(--text-style-display-lg-weight, var(--weight-medium));
+    line-height: var(
+      --text-style-display-lg-leading,
+      var(--line-height-display-lg)
+    );
+    letter-spacing: var(
+      --text-style-display-lg-tracking,
+      var(--letter-spacing-tight)
+    );
+  }
+  .text-style-display-md {
+    font-family: var(--text-style-display-md-font, var(--family-display));
+    font-size: var(--text-style-display-md-size, var(--size-display-md));
+    font-weight: var(--text-style-display-md-weight, var(--weight-medium));
+    line-height: var(
+      --text-style-display-md-leading,
+      var(--line-height-display-md)
+    );
+    letter-spacing: var(
+      --text-style-display-md-tracking,
+      var(--letter-spacing-tight)
+    );
+  }
+  .text-style-display-sm {
+    font-family: var(--text-style-display-sm-font, var(--family-display));
+    font-size: var(--text-style-display-sm-size, var(--size-display-sm));
+    font-weight: var(--text-style-display-sm-weight, var(--weight-medium));
+    line-height: var(
+      --text-style-display-sm-leading,
+      var(--line-height-display-sm)
+    );
+    letter-spacing: var(
+      --text-style-display-sm-tracking,
+      var(--letter-spacing-tight)
+    );
+  }
+
+  /* Header — page / section titles */
+  .text-style-header-lg {
+    font-family: var(--text-style-header-lg-font, var(--family-header));
+    font-size: var(--text-style-header-lg-size, var(--size-header-lg));
+    font-weight: var(--text-style-header-lg-weight, var(--weight-medium));
+    line-height: var(
+      --text-style-header-lg-leading,
+      var(--line-height-header-lg)
+    );
+    letter-spacing: var(
+      --text-style-header-lg-tracking,
+      var(--letter-spacing-default)
+    );
+  }
+  .text-style-header-md {
+    font-family: var(--text-style-header-md-font, var(--family-header));
+    font-size: var(--text-style-header-md-size, var(--size-header-md));
+    font-weight: var(--text-style-header-md-weight, var(--weight-medium));
+    line-height: var(
+      --text-style-header-md-leading,
+      var(--line-height-header-md)
+    );
+    letter-spacing: var(
+      --text-style-header-md-tracking,
+      var(--letter-spacing-default)
+    );
+  }
+  .text-style-header-sm {
+    font-family: var(--text-style-header-sm-font, var(--family-header));
+    font-size: var(--text-style-header-sm-size, var(--size-header-sm));
+    font-weight: var(--text-style-header-sm-weight, var(--weight-medium));
+    line-height: var(
+      --text-style-header-sm-leading,
+      var(--line-height-header-sm)
+    );
+    letter-spacing: var(
+      --text-style-header-sm-tracking,
+      var(--letter-spacing-default)
+    );
+  }
+
+  /* Body — paragraph text */
+  .text-style-body-lg {
+    font-family: var(--text-style-body-lg-font, var(--family-body));
+    font-size: var(--text-style-body-lg-size, var(--size-body-lg));
+    font-weight: var(--text-style-body-lg-weight, var(--weight-regular));
+    line-height: var(--text-style-body-lg-leading, var(--line-height-body-lg));
+    letter-spacing: var(
+      --text-style-body-lg-tracking,
+      var(--letter-spacing-default)
+    );
+  }
+  .text-style-body-lg-semibold {
+    font-family: var(--text-style-body-lg-semibold-font, var(--family-body));
+    font-size: var(--text-style-body-lg-semibold-size, var(--size-body-lg));
+    font-weight: var(
+      --text-style-body-lg-semibold-weight,
+      var(--weight-semibold)
+    );
+    line-height: var(
+      --text-style-body-lg-semibold-leading,
+      var(--line-height-body-lg)
+    );
+    letter-spacing: var(
+      --text-style-body-lg-semibold-tracking,
+      var(--letter-spacing-default)
+    );
+  }
+  .text-style-body-sm {
+    font-family: var(--text-style-body-sm-font, var(--family-body));
+    font-size: var(--text-style-body-sm-size, var(--size-body-sm));
+    font-weight: var(--text-style-body-sm-weight, var(--weight-regular));
+    line-height: var(--text-style-body-sm-leading, var(--line-height-body-sm));
+    letter-spacing: var(
+      --text-style-body-sm-tracking,
+      var(--letter-spacing-default)
+    );
+  }
+  .text-style-body-sm-semibold {
+    font-family: var(--text-style-body-sm-semibold-font, var(--family-body));
+    font-size: var(--text-style-body-sm-semibold-size, var(--size-body-sm));
+    font-weight: var(
+      --text-style-body-sm-semibold-weight,
+      var(--weight-semibold)
+    );
+    line-height: var(
+      --text-style-body-sm-semibold-leading,
+      var(--line-height-body-sm)
+    );
+    letter-spacing: var(
+      --text-style-body-sm-semibold-tracking,
+      var(--letter-spacing-default)
+    );
+  }
+
+  /* Caption / label / overline — helper text */
+  .text-style-body-caption {
+    font-family: var(--text-style-body-caption-font, var(--family-body));
+    font-size: var(--text-style-body-caption-size, var(--size-body-caption));
+    font-weight: var(--text-style-body-caption-weight, var(--weight-regular));
+    line-height: var(
+      --text-style-body-caption-leading,
+      var(--line-height-body-caption)
+    );
+    letter-spacing: var(
+      --text-style-body-caption-tracking,
+      var(--letter-spacing-default)
+    );
+  }
+  .text-style-body-label {
+    font-family: var(--text-style-body-label-font, var(--family-body));
+    font-size: var(--text-style-body-label-size, var(--size-body-label));
+    font-weight: var(--text-style-body-label-weight, var(--weight-semibold));
+    line-height: var(
+      --text-style-body-label-leading,
+      var(--line-height-body-label)
+    );
+    letter-spacing: var(
+      --text-style-body-label-tracking,
+      var(--letter-spacing-default)
+    );
+  }
+  .text-style-body-overline {
+    font-family: var(--text-style-body-overline-font, var(--family-body));
+    font-size: var(--text-style-body-overline-size, var(--size-body-overline));
+    font-weight: var(--text-style-body-overline-weight, var(--weight-semibold));
+    line-height: var(
+      --text-style-body-overline-leading,
+      var(--line-height-body-overline)
+    );
+    letter-spacing: var(
+      --text-style-body-overline-tracking,
+      var(--letter-spacing-loose)
+    );
+    text-transform: var(--text-style-body-overline-transform, uppercase);
+  }
+
+  /* Code — monospace */
+  .text-style-body-code {
+    font-family: var(--text-style-body-code-font, var(--family-code));
+    font-size: var(--text-style-body-code-size, var(--size-body-code));
+    font-weight: var(--text-style-body-code-weight, var(--weight-medium));
+    line-height: var(
+      --text-style-body-code-leading,
+      var(--line-height-body-code)
+    );
+    letter-spacing: var(
+      --text-style-body-code-tracking,
+      var(--letter-spacing-default)
+    );
+  }
+}

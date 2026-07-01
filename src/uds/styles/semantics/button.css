@@ -1,0 +1,35 @@
+/**
+ * Semantic button tokens — backgrounds for the button namespace.
+ *
+ * Each (variant × intent × state) cell gets its own scoped token so variants
+ * can drift independently of the generic surface ramps. Pair each background
+ * with the matching foreground from foreground.css:
+ *
+ *   bg-button-primary                + text-on-button-primary
+ *   bg-button-primary-danger         + text-on-button-primary
+ *   bg-button-secondary              + text-on-button-secondary
+ *   bg-button-secondary-danger-hover + text-on-button-secondary-danger
+ *   bg-button-disabled               + text-on-button-disabled
+ */
+
+:root {
+  --color-button-primary: var(--palette-neutral-850);
+  --color-button-primary-hover: var(--palette-neutral-700);
+  --color-button-primary-danger: var(--palette-danger-700);
+  --color-button-primary-danger-hover: var(--palette-danger-800);
+  --color-button-secondary: var(--palette-neutral-0);
+  --color-button-secondary-hover: var(--palette-warm-neutral-200);
+  --color-button-secondary-danger-hover: var(--palette-danger-50);
+  --color-button-disabled: var(--palette-neutral-200);
+}
+
+.dark {
+  --color-button-primary: var(--palette-neutral-0);
+  --color-button-primary-hover: var(--palette-neutral-300);
+  --color-button-primary-danger: var(--palette-danger-700);
+  --color-button-primary-danger-hover: var(--palette-danger-900);
+  --color-button-secondary: var(--palette-cool-neutral-900);
+  --color-button-secondary-hover: var(--palette-cool-neutral-800);
+  --color-button-secondary-danger-hover: var(--palette-danger-900);
+  --color-button-disabled: var(--palette-cool-neutral-800);
+}

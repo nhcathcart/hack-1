@@ -45,7 +45,6 @@ type Candidate = {
   tags: string[];
   match: number;
   image: string;
-  accent: string;
   sources: {
     granola: string;
     notion: string;
@@ -237,14 +236,6 @@ const teamMembers = [
   },
 ];
 
-const accents = [
-  "from-rose-400 via-orange-300 to-yellow-300",
-  "from-fuchsia-400 via-pink-400 to-red-300",
-  "from-cyan-300 via-emerald-300 to-lime-300",
-  "from-sky-400 via-indigo-400 to-violet-400",
-  "from-amber-300 via-lime-300 to-emerald-400",
-];
-
 const stages = ["Recruiter screen", "Hiring manager", "Panel debrief", "Final loop"];
 const locations = ["NYC HQ", "Remote", "Austin, TX", "Chicago, IL", "Denver, CO"];
 const rounds = [
@@ -305,7 +296,6 @@ const candidates: Candidate[] = teamMembers.map((member, index) => {
     ],
     match: 72 + ((index * 7) % 27),
     image: member.image,
-    accent: accents[index % accents.length],
     sources: {
       granola: `Granola captured ${member.name}'s strongest moment: they ${theme.strength}. The notes flag that ${member.title} maps well to the current team need, especially around ${rounds[index % rounds.length].toLowerCase()}. Follow-up: ${theme.concern}.`,
       notion: `Notion scorecard for ${member.name}: recommended calibration is ${
@@ -350,33 +340,33 @@ const decisionOptions: Array<{
     value: "Pass",
     label: "Pass",
     icon: X,
-    className: "border-slate-200 bg-white text-slate-700",
+    className: "bg-surface-danger text-on-surface-danger",
   },
   {
     value: "Maybe",
     label: "Maybe",
     icon: Star,
-    className: "border-amber-300 bg-amber-100 text-amber-800",
+    className: "bg-surface-secondary text-on-surface-secondary-default",
   },
   {
     value: "Like",
     label: "Like",
     icon: Check,
-    className: "border-sky-300 bg-sky-100 text-sky-800",
+    className: "bg-surface-tertiary text-on-surface-primary-default",
   },
   {
     value: "Love",
     label: "Love",
     icon: Heart,
-    className: "border-rose-300 bg-rose-100 text-rose-700",
+    className: "bg-surface-success text-on-surface-success",
   },
 ];
 
 const decisionTone: Record<Decision, string> = {
-  Love: "bg-rose-100 text-rose-700 ring-rose-200",
-  Like: "bg-sky-100 text-sky-700 ring-sky-200",
-  Maybe: "bg-amber-100 text-amber-800 ring-amber-200",
-  Pass: "bg-slate-100 text-slate-700 ring-slate-200",
+  Love: "bg-surface-success text-on-surface-success",
+  Like: "bg-surface-secondary text-on-surface-secondary-default",
+  Maybe: "bg-surface-tertiary text-on-surface-primary-default",
+  Pass: "bg-surface-danger text-on-surface-danger",
 };
 
 export default function Home() {
@@ -437,12 +427,12 @@ export default function Home() {
   }
 
   return (
-    <main className="h-screen overflow-hidden bg-[#ffedd5] px-4 py-4 text-slate-950">
-      <div className="mx-auto flex h-full w-full max-w-7xl flex-col gap-4">
-        <header className="shrink-0 rounded-[2rem] bg-white/85 p-4 shadow-xl ring-1 ring-orange-100">
+    <main className="h-screen overflow-hidden bg-surface-secondary px-4 py-4 text-on-surface-secondary-default">
+      <div className="mx-auto flex h-full w-full max-w-page flex-col gap-4">
+        <header className="shrink-0 rounded-3xl border border-stroke-default bg-surface-primary p-4 shadow-elevation">
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div className="flex items-center gap-4">
-            <div className="relative size-14 overflow-hidden rounded-2xl bg-white shadow-lg ring-1 ring-orange-100">
+            <div className="relative size-14 overflow-hidden rounded-2xl border border-stroke-default bg-surface-primary shadow-elevation">
               <Image
                 src="/kindling-logo.png"
                 alt="Kindling logo"
@@ -453,23 +443,23 @@ export default function Home() {
               />
             </div>
             <div>
-              <h1 className="text-2xl font-black tracking-tight md:text-3xl">
+              <h1 className="text-style-header-lg text-on-surface-primary-default">
                 Kindling
               </h1>
-              <p className="mt-1 text-sm font-bold uppercase tracking-wide text-rose-500">
-                Blinded hiring feedback with a little spark
+              <p className="mt-1 text-style-body-overline text-on-surface-primary-subtle">
+                Blinded hiring feedback in the Kaizen design system
               </p>
             </div>
           </div>
 
           <div className="min-w-64">
-            <div className="rounded-full bg-orange-100 p-1">
+            <div className="rounded-full bg-surface-tertiary p-1">
               <div
-                className="h-3 rounded-full bg-gradient-to-r from-rose-400 via-amber-300 to-lime-300"
+                className="h-3 rounded-full bg-surface-inverse transition-all duration-base ease-move"
                 style={{ width: `${progress}%` }}
               />
             </div>
-            <div className="mt-2 flex justify-between text-xs font-black uppercase tracking-wide text-slate-500">
+            <div className="mt-2 flex justify-between text-style-body-overline text-on-surface-primary-subtle">
               <span>{Object.keys(submitted).length} submitted</span>
               <span>{candidates.length} candidates</span>
             </div>
@@ -479,15 +469,17 @@ export default function Home() {
 
         <section className="grid min-h-0 flex-1 gap-4 lg:grid-cols-[1fr_480px]">
           <div className="grid min-h-0 gap-4 overflow-hidden xl:grid-cols-[340px_1fr]">
-            <aside className="flex min-h-0 flex-col rounded-[2rem] bg-white/85 p-4 shadow-xl ring-1 ring-orange-100">
+            <aside className="flex min-h-0 flex-col rounded-3xl border border-stroke-default bg-surface-primary p-4 shadow-elevation">
               <div className="mb-3 flex shrink-0 items-center justify-between">
                 <div>
-                  <div className="text-lg font-black">Candidate stack</div>
-                  <div className="text-xs font-semibold text-slate-500">
+                  <div className="text-style-body-lg-semibold text-on-surface-primary-default">
+                    Candidate stack
+                  </div>
+                  <div className="text-style-body-caption text-on-surface-primary-subtle">
                     Pick a profile to review.
                   </div>
                 </div>
-                <Badge className="bg-rose-100 text-rose-700">
+                <Badge>
                   {index + 1}/{candidates.length}
                 </Badge>
               </div>
@@ -503,14 +495,14 @@ export default function Home() {
                       type="button"
                       onClick={() => selectCandidate(candidateIndex)}
                       className={cn(
-                        "block w-full rounded-3xl p-3 text-left transition-transform hover:-translate-y-0.5",
+                        "block w-full rounded-2xl p-3 text-left transition-all duration-fast ease-move hover:-translate-y-0.5",
                         isSelected
-                          ? "bg-slate-950 text-white shadow-xl"
-                          : "bg-white text-slate-950 ring-1 ring-slate-200"
+                          ? "bg-surface-inverse text-on-surface-inverse-default shadow-elevation"
+                          : "border border-stroke-default bg-surface-primary text-on-surface-primary-default hover:bg-surface-secondary"
                       )}
                     >
                       <div className="flex items-center gap-3">
-                        <div className="relative size-14 shrink-0 overflow-hidden rounded-2xl bg-slate-200 ring-2 ring-white/70">
+                        <div className="relative size-14 shrink-0 overflow-hidden rounded-xl bg-surface-tertiary">
                           <Image
                             src={candidate.image}
                             alt={`${candidate.name} headshot`}
@@ -520,13 +512,15 @@ export default function Home() {
                           />
                         </div>
                         <div className="min-w-0 flex-1">
-                          <div className="truncate font-black">
+                          <div className="truncate text-style-body-sm-semibold">
                             {candidate.name}
                           </div>
                           <div
                             className={cn(
-                              "truncate text-xs font-semibold",
-                              isSelected ? "text-white/70" : "text-slate-500"
+                              "truncate text-style-body-caption",
+                              isSelected
+                                ? "text-on-surface-inverse-subtle"
+                                : "text-on-surface-primary-subtle"
                             )}
                           >
                             {candidate.role}
@@ -534,14 +528,21 @@ export default function Home() {
                         </div>
                         {isUnlocked ? (
                           <MessageCircle
-                            className="size-4 text-lime-400"
+                            className={cn(
+                              "size-4",
+                              isSelected
+                                ? "text-on-surface-inverse-default"
+                                : "text-on-surface-primary-default"
+                            )}
                             aria-hidden="true"
                           />
                         ) : (
                           <LockKeyhole
                             className={cn(
                               "size-4",
-                              isSelected ? "text-white/60" : "text-slate-400"
+                              isSelected
+                                ? "text-on-surface-inverse-subtle"
+                                : "text-on-surface-primary-subtle"
                             )}
                             aria-hidden="true"
                           />
@@ -553,18 +554,16 @@ export default function Home() {
               </div>
             </aside>
 
-            <article className="min-h-0 overflow-hidden rounded-[2.25rem] bg-white shadow-2xl ring-1 ring-orange-100">
-              <div className={cn("h-60 bg-gradient-to-br p-5", selected.accent)}>
+            <article className="min-h-0 overflow-hidden rounded-3xl border border-stroke-default bg-surface-primary shadow-elevation">
+              <div className="h-60 bg-surface-inverse p-5">
                 <div className="flex items-start justify-between gap-3">
-                  <Badge className="border-white/40 bg-white/90 text-slate-950">
-                    {selected.stage}
-                  </Badge>
-                  <div className="rounded-full bg-white/90 px-4 py-2 text-lg font-black text-rose-600 shadow-sm">
+                  <Badge>{selected.stage}</Badge>
+                  <div className="rounded-full bg-surface-primary px-4 py-2 text-style-body-lg-semibold text-on-surface-primary-default shadow-elevation">
                     {selected.match}% fit
                   </div>
                 </div>
                 <div className="flex h-44 items-center justify-center">
-                  <div className="relative size-40 overflow-hidden rounded-[2rem] bg-white/85 shadow-2xl ring-8 ring-white/50">
+                  <div className="relative size-40 overflow-hidden rounded-3xl border-4 border-surface-primary bg-surface-primary shadow-elevation">
                     <Image
                       src={selected.image}
                       alt={`${selected.name} headshot`}
@@ -580,10 +579,10 @@ export default function Home() {
               <div className="space-y-4 p-5">
                 <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
                   <div>
-                    <h2 className="text-3xl font-black tracking-tight">
+                    <h2 className="text-style-header-lg text-on-surface-primary-default">
                       {selected.name}
                     </h2>
-                    <div className="mt-2 flex flex-wrap gap-x-4 gap-y-2 text-sm font-bold text-slate-600">
+                    <div className="mt-2 flex flex-wrap gap-x-4 gap-y-2 text-style-body-sm text-on-surface-primary-subtle">
                       <span className="flex items-center gap-1.5">
                         <BriefcaseBusiness className="size-4" aria-hidden="true" />
                         {selected.role}
@@ -599,7 +598,7 @@ export default function Home() {
                     <button
                       type="button"
                       onClick={() => selectCandidate(index - 1)}
-                      className="flex size-11 items-center justify-center rounded-full bg-slate-100 text-slate-700 transition-transform hover:-translate-y-0.5"
+                      className="flex size-11 items-center justify-center rounded-full bg-surface-secondary text-on-surface-primary-default transition-all duration-fast ease-move hover:-translate-y-0.5 hover:bg-surface-secondary-hover"
                       aria-label="Previous candidate"
                     >
                       <ChevronLeft className="size-5" aria-hidden="true" />
@@ -607,7 +606,7 @@ export default function Home() {
                     <button
                       type="button"
                       onClick={() => selectCandidate(index + 1)}
-                      className="flex size-11 items-center justify-center rounded-full bg-slate-100 text-slate-700 transition-transform hover:-translate-y-0.5"
+                      className="flex size-11 items-center justify-center rounded-full bg-surface-secondary text-on-surface-primary-default transition-all duration-fast ease-move hover:-translate-y-0.5 hover:bg-surface-secondary-hover"
                       aria-label="Next candidate"
                     >
                       <ChevronRight className="size-5" aria-hidden="true" />
@@ -615,27 +614,23 @@ export default function Home() {
                   </div>
                 </div>
 
-                <p className="max-w-3xl text-base leading-7 text-slate-700">
+                <p className="max-w-prose text-style-body-lg text-on-surface-primary-subtle">
                   {selected.summary}
                 </p>
 
                 <div className="flex flex-wrap gap-2">
                   {selected.tags.map((tag) => (
-                    <Badge
-                      key={tag}
-                      className="rounded-full border-slate-200 bg-slate-50 px-3 py-1 text-slate-700"
-                      variant="outline"
-                    >
+                    <Badge key={tag} variant="outline">
                       {tag}
                     </Badge>
                   ))}
                 </div>
 
-                <div className="rounded-3xl bg-slate-950 p-4 text-white">
-                  <div className="text-xs font-black uppercase tracking-wide text-rose-300">
+                <div className="rounded-2xl bg-surface-inverse p-4 text-on-surface-inverse-default">
+                  <div className="text-style-body-overline text-on-surface-inverse-subtle">
                     Interview round
                   </div>
-                  <div className="mt-1 text-base font-semibold">
+                  <div className="mt-1 text-style-body-lg-semibold">
                     {selected.interview}
                   </div>
                 </div>
@@ -646,7 +641,7 @@ export default function Home() {
                       key={source}
                       type="button"
                       onClick={() => setSourceOpen(source)}
-                      className="rounded-2xl bg-orange-50 px-3 py-2 text-sm font-black text-slate-800 ring-1 ring-orange-100 transition-colors hover:bg-orange-100"
+                      className="rounded-2xl border border-stroke-default bg-surface-secondary px-3 py-2 text-style-body-sm-semibold text-on-surface-primary-default transition-colors duration-fast ease-move hover:bg-surface-secondary-hover"
                     >
                       {sourceLabels[source]}
                     </button>
@@ -658,14 +653,14 @@ export default function Home() {
 
           <aside className="grid min-h-0 grid-rows-2 gap-4">
             <form
-              className="flex min-h-0 flex-col overflow-hidden rounded-[2rem] bg-white p-4 shadow-xl ring-1 ring-orange-100"
+              className="flex min-h-0 flex-col overflow-hidden rounded-3xl border border-stroke-default bg-surface-primary p-4 shadow-elevation"
               onSubmit={submitFeedback}
             >
               <div className="shrink-0">
-                <h2 className="text-xl font-black tracking-tight">
+                <h2 className="text-style-header-sm text-on-surface-primary-default">
                   Your feedback
                 </h2>
-                <p className="mt-1 text-sm font-semibold text-slate-500">
+                <p className="mt-1 text-style-body-sm text-on-surface-primary-subtle">
                   Submit your read before the panel unlocks.
                 </p>
               </div>
@@ -681,10 +676,10 @@ export default function Home() {
                         type="button"
                         onClick={() => setDecision(option.value)}
                         className={cn(
-                          "flex h-11 items-center justify-center gap-1.5 rounded-2xl border-2 text-xs font-black transition-transform hover:-translate-y-0.5",
+                          "flex h-11 items-center justify-center gap-1.5 rounded-2xl border-2 text-style-body-label transition-all duration-fast ease-move hover:-translate-y-0.5",
                           option.className,
                           decision === option.value
-                            ? "border-slate-950 shadow-[3px_3px_0_#0f172a]"
+                            ? "border-stroke-emphasis shadow-elevation"
                             : "border-transparent"
                         )}
                       >
@@ -701,13 +696,16 @@ export default function Home() {
                   })}
                 </div>
 
-                <div className="mt-3 rounded-3xl bg-[#fef3c7] p-3 ring-1 ring-amber-200">
+                <div className="mt-3 rounded-2xl border border-stroke-default bg-surface-secondary p-3">
                   <div className="flex items-center justify-between">
-                    <label htmlFor="score" className="text-sm font-black">
+                    <label
+                      htmlFor="score"
+                      className="text-style-body-sm-semibold text-on-surface-primary-default"
+                    >
                     Score
                     </label>
-                    <span className="flex items-center gap-1 rounded-full bg-white px-3 py-1 text-sm font-black text-slate-950 shadow-sm">
-                      <Star className="size-4 fill-amber-400 text-amber-400" />
+                    <span className="flex items-center gap-1 rounded-full bg-surface-primary px-3 py-1 text-style-body-sm-semibold text-on-surface-primary-default shadow-elevation">
+                      <Star className="size-4 fill-current" />
                       {score}/5
                     </span>
                   </div>
@@ -718,17 +716,17 @@ export default function Home() {
                     max="5"
                     value={score}
                     onChange={(event) => setScore(Number(event.target.value))}
-                    className="mt-2 w-full accent-rose-500"
+                    className="mt-2 w-full [accent-color:var(--color-surface-inverse)]"
                   />
                 </div>
 
                 <button
                   type="button"
                   onClick={() => setNotesOpen(true)}
-                  className="mt-3 flex h-10 w-full items-center justify-between rounded-2xl bg-slate-50 px-4 text-left text-sm font-black text-slate-700 ring-1 ring-slate-200 transition-colors hover:bg-slate-100"
+                  className="mt-3 flex h-10 w-full items-center justify-between rounded-2xl border border-stroke-default bg-surface-secondary px-4 text-left text-style-body-sm-semibold text-on-surface-primary-default transition-colors duration-fast ease-move hover:bg-surface-secondary-hover"
                 >
                   <span>Add notes</span>
-                  <span className="text-xs font-bold text-slate-400">
+                  <span className="text-style-body-caption text-on-surface-primary-subtle">
                     {notes.trim() ? "Added" : "Optional"}
                   </span>
                 </button>
@@ -737,33 +735,26 @@ export default function Home() {
               <Button
                 type="submit"
                 size="lg"
-                className="mt-3 h-10 w-full shrink-0 gap-2 rounded-2xl bg-rose-500 text-sm font-black text-white hover:bg-rose-600"
+                className="mt-3 w-full shrink-0"
               >
                 <Send className="size-4" aria-hidden="true" />
                 {myFeedback ? "Update feedback" : "Submit and reveal"}
               </Button>
             </form>
 
-            <section className="flex min-h-0 flex-col rounded-[2rem] bg-white p-5 shadow-xl ring-1 ring-orange-100">
+            <section className="flex min-h-0 flex-col rounded-3xl border border-stroke-default bg-surface-primary p-5 shadow-elevation">
               <div className="flex shrink-0 items-start justify-between gap-3">
                 <div>
-                  <h2 className="text-3xl font-black tracking-tight">
+                  <h2 className="text-style-header-sm text-on-surface-primary-default">
                     Panel notes
                   </h2>
-                  <p className="mt-1 text-sm font-semibold text-slate-500">
+                  <p className="mt-1 text-style-body-sm text-on-surface-primary-subtle">
                     {myFeedback
                       ? "Unlocked because you submitted your read."
                       : "Hidden until you submit your own read."}
                   </p>
                 </div>
-                <Badge
-                  className={cn(
-                    "gap-1.5 rounded-full px-3 py-1",
-                    myFeedback
-                      ? "bg-lime-100 text-lime-800"
-                      : "bg-slate-100 text-slate-600"
-                  )}
-                >
+                <Badge variant={myFeedback ? "success" : "default"}>
                   {myFeedback ? (
                     <MessageCircle className="size-3.5" aria-hidden="true" />
                   ) : (
@@ -779,24 +770,26 @@ export default function Home() {
                     {visibleFeedback.map((item, itemIndex) => (
                       <div key={`${item.author}-${item.round}`}>
                         {itemIndex > 0 ? <Separator className="mb-3" /> : null}
-                        <article className="space-y-2 rounded-3xl bg-slate-50 p-4">
+                        <article className="space-y-2 rounded-2xl border border-stroke-default bg-surface-secondary p-4">
                           <div className="flex flex-wrap items-start justify-between gap-3">
                             <div>
-                              <div className="font-black">{item.author}</div>
-                              <div className="text-xs font-medium text-slate-500">
+                              <div className="text-style-body-sm-semibold text-on-surface-primary-default">
+                                {item.author}
+                              </div>
+                              <div className="text-style-body-caption text-on-surface-primary-subtle">
                                 {item.role} · {item.round} · {item.submittedAt}
                               </div>
                             </div>
                             <span
                               className={cn(
-                                "rounded-full px-3 py-1 text-xs font-black ring-1",
+                                "rounded-full border border-stroke-default px-3 py-1 text-style-body-label",
                                 decisionTone[item.decision]
                               )}
                             >
                               {item.decision} · {item.score}/5
                             </span>
                           </div>
-                          <p className="text-sm leading-5 text-slate-700">
+                          <p className="text-style-body-sm text-on-surface-primary-subtle">
                             {item.notes}
                           </p>
                         </article>
@@ -804,12 +797,12 @@ export default function Home() {
                     ))}
                   </div>
                 ) : (
-                  <div className="flex min-h-full flex-col items-center justify-center rounded-3xl bg-slate-950 p-6 text-center text-white">
-                    <div className="flex size-14 items-center justify-center rounded-full bg-white/10">
+                  <div className="flex min-h-full flex-col items-center justify-center rounded-2xl bg-surface-inverse p-6 text-center text-on-surface-inverse-default">
+                    <div className="flex size-14 items-center justify-center rounded-full bg-surface-primary/10">
                       <EyeOff className="size-6" aria-hidden="true" />
                     </div>
-                    <h3 className="mt-4 text-xl font-black">Panel locked</h3>
-                    <p className="mt-2 max-w-xs text-sm leading-6 text-white/70">
+                    <h3 className="mt-4 text-style-body-lg-semibold">Panel locked</h3>
+                    <p className="mt-2 max-w-xs text-style-body-sm text-on-surface-inverse-subtle">
                       Submit your own feedback first. Then everyone else&apos;s
                       notes appear instantly.
                     </p>
@@ -822,21 +815,21 @@ export default function Home() {
       </div>
 
       {notesOpen ? (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-4">
-          <div className="w-full max-w-xl rounded-[2rem] bg-white p-5 shadow-2xl">
+        <div className="fixed inset-0 z-modal flex items-center justify-center bg-surface-overlay p-4">
+          <div className="w-full max-w-md rounded-3xl border border-stroke-default bg-surface-primary p-5 shadow-elevation">
             <div className="flex items-start justify-between gap-4">
               <div>
-                <h2 className="text-2xl font-black tracking-tight">
+                <h2 className="text-style-header-sm text-on-surface-primary-default">
                   Feedback note
                 </h2>
-                <p className="mt-1 text-sm font-semibold text-slate-500">
+                <p className="mt-1 text-style-body-sm text-on-surface-primary-subtle">
                   Add context without crowding the scorecard.
                 </p>
               </div>
               <button
                 type="button"
                 onClick={() => setNotesOpen(false)}
-                className="flex size-9 items-center justify-center rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200"
+                className="flex size-9 items-center justify-center rounded-full bg-surface-secondary text-on-surface-primary-default hover:bg-surface-secondary-hover"
                 aria-label="Close feedback note modal"
               >
                 <X className="size-4" aria-hidden="true" />
@@ -847,23 +840,18 @@ export default function Home() {
               value={notes}
               onChange={(event) => setNotes(event.target.value)}
               placeholder="Add the context you want captured before the panel opens..."
-              className="mt-5 min-h-48 w-full resize-none rounded-3xl border-0 bg-slate-50 px-4 py-3 text-sm shadow-inner outline-none ring-1 ring-slate-200 placeholder:text-slate-400 focus-visible:ring-3 focus-visible:ring-rose-200"
+              className="mt-5 min-h-48 w-full resize-none rounded-2xl border border-stroke-default bg-surface-secondary px-4 py-3 text-style-body-sm text-on-surface-primary-default outline-none placeholder:text-on-surface-primary-subtle focus-visible:border-stroke-emphasis focus-visible:ring-2 focus-visible:ring-stroke-emphasis"
             />
 
             <div className="mt-5 flex justify-end gap-3">
               <Button
                 type="button"
-                variant="outline"
+                variant="secondary"
                 onClick={() => setNotes("")}
-                className="rounded-2xl"
               >
                 Clear
               </Button>
-              <Button
-                type="button"
-                onClick={() => setNotesOpen(false)}
-                className="rounded-2xl bg-rose-500 text-white hover:bg-rose-600"
-              >
+              <Button type="button" onClick={() => setNotesOpen(false)}>
                 Save note
               </Button>
             </div>
@@ -872,37 +860,33 @@ export default function Home() {
       ) : null}
 
       {sourceOpen ? (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-4">
-          <div className="w-full max-w-2xl rounded-[2rem] bg-white p-5 shadow-2xl">
+        <div className="fixed inset-0 z-modal flex items-center justify-center bg-surface-overlay p-4">
+          <div className="w-full max-w-lg rounded-3xl border border-stroke-default bg-surface-primary p-5 shadow-elevation">
             <div className="flex items-start justify-between gap-4">
               <div>
-                <h2 className="text-2xl font-black tracking-tight">
+                <h2 className="text-style-header-sm text-on-surface-primary-default">
                   {sourceLabels[sourceOpen]}
                 </h2>
-                <p className="mt-1 text-sm font-semibold text-slate-500">
+                <p className="mt-1 text-style-body-sm text-on-surface-primary-subtle">
                   {selected.name} · {selected.role}
                 </p>
               </div>
               <button
                 type="button"
                 onClick={() => setSourceOpen(null)}
-                className="flex size-9 items-center justify-center rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200"
+                className="flex size-9 items-center justify-center rounded-full bg-surface-secondary text-on-surface-primary-default hover:bg-surface-secondary-hover"
                 aria-label="Close source modal"
               >
                 <X className="size-4" aria-hidden="true" />
               </button>
             </div>
 
-            <div className="mt-5 rounded-3xl bg-slate-50 p-5 text-base leading-8 text-slate-700 ring-1 ring-slate-200">
+            <div className="mt-5 rounded-2xl border border-stroke-default bg-surface-secondary p-5 text-style-body-lg text-on-surface-primary-subtle">
               {selected.sources[sourceOpen]}
             </div>
 
             <div className="mt-5 flex justify-end">
-              <Button
-                type="button"
-                onClick={() => setSourceOpen(null)}
-                className="rounded-2xl bg-rose-500 text-white hover:bg-rose-600"
-              >
+              <Button type="button" onClick={() => setSourceOpen(null)}>
                 Done
               </Button>
             </div>
