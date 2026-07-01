@@ -386,15 +386,16 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen bg-[#ffedd5] px-4 py-6 text-slate-950">
-      <div className="mx-auto flex min-h-[calc(100vh-3rem)] w-full max-w-7xl flex-col gap-5">
-        <header className="flex flex-col gap-4 rounded-[2rem] bg-white/85 p-5 shadow-xl ring-1 ring-orange-100 md:flex-row md:items-center md:justify-between">
+    <main className="h-screen overflow-hidden bg-[#ffedd5] px-4 py-4 text-slate-950">
+      <div className="mx-auto flex h-full w-full max-w-7xl flex-col gap-4">
+        <header className="shrink-0 rounded-[2rem] bg-white/85 p-4 shadow-xl ring-1 ring-orange-100">
+          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div className="flex items-center gap-4">
-            <div className="flex size-14 items-center justify-center rounded-2xl bg-rose-500 text-white shadow-lg">
-              <Sparkles className="size-7" aria-hidden="true" />
+            <div className="flex size-12 items-center justify-center rounded-2xl bg-rose-500 text-white shadow-lg">
+              <Sparkles className="size-6" aria-hidden="true" />
             </div>
             <div>
-              <h1 className="text-3xl font-black tracking-tight md:text-4xl">
+              <h1 className="text-2xl font-black tracking-tight md:text-3xl">
                 Talent Crush
               </h1>
               <p className="mt-1 text-sm font-bold uppercase tracking-wide text-rose-500">
@@ -415,12 +416,13 @@ export default function Home() {
               <span>{candidates.length} candidates</span>
             </div>
           </div>
+          </div>
         </header>
 
-        <section className="grid flex-1 gap-5 lg:grid-cols-[1fr_430px]">
-          <div className="grid gap-5 xl:grid-cols-[360px_1fr]">
-            <aside className="rounded-[2rem] bg-white/85 p-4 shadow-xl ring-1 ring-orange-100">
-              <div className="mb-3 flex items-center justify-between">
+        <section className="grid min-h-0 flex-1 gap-4 lg:grid-cols-[1fr_410px]">
+          <div className="grid min-h-0 gap-4 overflow-hidden xl:grid-cols-[340px_1fr]">
+            <aside className="flex min-h-0 flex-col rounded-[2rem] bg-white/85 p-4 shadow-xl ring-1 ring-orange-100">
+              <div className="mb-3 flex shrink-0 items-center justify-between">
                 <div>
                   <div className="text-lg font-black">Candidate stack</div>
                   <div className="text-xs font-semibold text-slate-500">
@@ -432,7 +434,7 @@ export default function Home() {
                 </Badge>
               </div>
 
-              <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-1">
+              <div className="min-h-0 flex-1 space-y-3 overflow-y-auto pr-1">
                 {candidates.map((candidate, candidateIndex) => {
                   const isSelected = candidate.id === selected.id;
                   const isUnlocked = Boolean(submitted[candidate.id]);
@@ -493,8 +495,8 @@ export default function Home() {
               </div>
             </aside>
 
-            <article className="overflow-hidden rounded-[2.25rem] bg-white shadow-2xl ring-1 ring-orange-100">
-                  <div className={cn("min-h-80 bg-gradient-to-br p-6", selected.accent)}>
+            <article className="min-h-0 overflow-hidden rounded-[2.25rem] bg-white shadow-2xl ring-1 ring-orange-100">
+              <div className={cn("h-60 bg-gradient-to-br p-5", selected.accent)}>
                 <div className="flex items-start justify-between gap-3">
                   <Badge className="border-white/40 bg-white/90 text-slate-950">
                     {selected.stage}
@@ -503,24 +505,24 @@ export default function Home() {
                     {selected.match}% match
                   </div>
                 </div>
-                <div className="flex min-h-56 items-center justify-center">
-                  <div className="relative size-52 overflow-hidden rounded-[2.25rem] bg-white/85 shadow-2xl ring-8 ring-white/50">
+                <div className="flex h-44 items-center justify-center">
+                  <div className="relative size-40 overflow-hidden rounded-[2rem] bg-white/85 shadow-2xl ring-8 ring-white/50">
                     <Image
                       src={selected.image}
                       alt={`${selected.name} headshot`}
                       fill
                       priority={index === 0}
-                      sizes="208px"
+                      sizes="160px"
                       className="object-cover"
                     />
                   </div>
                 </div>
               </div>
 
-              <div className="space-y-5 p-6">
+              <div className="space-y-4 p-5">
                 <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
                   <div>
-                    <h2 className="text-4xl font-black tracking-tight">
+                    <h2 className="text-3xl font-black tracking-tight">
                       {selected.name}
                     </h2>
                     <div className="mt-2 flex flex-wrap gap-x-4 gap-y-2 text-sm font-bold text-slate-600">
@@ -555,7 +557,7 @@ export default function Home() {
                   </div>
                 </div>
 
-                <p className="max-w-3xl text-lg leading-8 text-slate-700">
+                <p className="max-w-3xl text-base leading-7 text-slate-700">
                   {selected.summary}
                 </p>
 
@@ -571,11 +573,11 @@ export default function Home() {
                   ))}
                 </div>
 
-                <div className="rounded-3xl bg-slate-950 p-5 text-white">
+                <div className="rounded-3xl bg-slate-950 p-4 text-white">
                   <div className="text-xs font-black uppercase tracking-wide text-rose-300">
                     Interview round
                   </div>
-                  <div className="mt-1 text-lg font-semibold">
+                  <div className="mt-1 text-base font-semibold">
                     {selected.interview}
                   </div>
                 </div>
@@ -583,9 +585,9 @@ export default function Home() {
             </article>
           </div>
 
-          <aside className="space-y-5">
+          <aside className="grid min-h-0 grid-rows-[auto_1fr] gap-4">
             <form
-              className="rounded-[2rem] bg-white p-5 shadow-xl ring-1 ring-orange-100"
+              className="rounded-[2rem] bg-white p-4 shadow-xl ring-1 ring-orange-100"
               onSubmit={submitFeedback}
             >
               <div>
@@ -597,7 +599,7 @@ export default function Home() {
                 </p>
               </div>
 
-              <div className="mt-5 grid grid-cols-2 gap-3">
+              <div className="mt-4 grid grid-cols-2 gap-2">
                 {decisionOptions.map((option) => {
                   const Icon = option.icon;
 
@@ -607,7 +609,7 @@ export default function Home() {
                       type="button"
                       onClick={() => setDecision(option.value)}
                       className={cn(
-                        "flex h-20 items-center justify-center gap-2 rounded-3xl border-2 text-base font-black transition-transform hover:-translate-y-0.5",
+                        "flex h-14 items-center justify-center gap-2 rounded-2xl border-2 text-sm font-black transition-transform hover:-translate-y-0.5",
                         option.className,
                         decision === option.value
                           ? "border-slate-950 shadow-[4px_4px_0_#0f172a]"
@@ -627,7 +629,7 @@ export default function Home() {
                 })}
               </div>
 
-              <div className="mt-5 rounded-3xl bg-[#fef3c7] p-4 ring-1 ring-amber-200">
+              <div className="mt-4 rounded-3xl bg-[#fef3c7] p-3 ring-1 ring-amber-200">
                 <div className="flex items-center justify-between">
                   <label htmlFor="score" className="text-sm font-black">
                     Chemistry score
@@ -644,7 +646,7 @@ export default function Home() {
                   max="5"
                   value={score}
                   onChange={(event) => setScore(Number(event.target.value))}
-                  className="mt-4 w-full accent-rose-500"
+                  className="mt-2 w-full accent-rose-500"
                 />
               </div>
 
@@ -652,21 +654,21 @@ export default function Home() {
                 value={notes}
                 onChange={(event) => setNotes(event.target.value)}
                 placeholder="Drop your interview notes before peeking..."
-                className="mt-5 min-h-32 w-full resize-none rounded-3xl border-0 bg-slate-50 px-4 py-3 text-sm shadow-inner outline-none ring-1 ring-slate-200 placeholder:text-slate-400 focus-visible:ring-3 focus-visible:ring-rose-200"
+                className="mt-4 min-h-20 w-full resize-none rounded-3xl border-0 bg-slate-50 px-4 py-3 text-sm shadow-inner outline-none ring-1 ring-slate-200 placeholder:text-slate-400 focus-visible:ring-3 focus-visible:ring-rose-200"
               />
 
               <Button
                 type="submit"
                 size="lg"
-                className="mt-5 h-12 w-full gap-2 rounded-2xl bg-rose-500 text-base font-black text-white hover:bg-rose-600"
+                className="mt-4 h-11 w-full gap-2 rounded-2xl bg-rose-500 text-base font-black text-white hover:bg-rose-600"
               >
                 <Send className="size-4" aria-hidden="true" />
                 {myFeedback ? "Update my read" : "Lock read and reveal"}
               </Button>
             </form>
 
-            <section className="rounded-[2rem] bg-white p-5 shadow-xl ring-1 ring-orange-100">
-              <div className="flex items-start justify-between gap-3">
+            <section className="flex min-h-0 flex-col rounded-[2rem] bg-white p-4 shadow-xl ring-1 ring-orange-100">
+              <div className="flex shrink-0 items-start justify-between gap-3">
                 <div>
                   <h2 className="text-2xl font-black tracking-tight">
                     Panel messages
@@ -694,7 +696,7 @@ export default function Home() {
                 </Badge>
               </div>
 
-              <div className="mt-5">
+              <div className="mt-4 min-h-0 flex-1 overflow-y-auto pr-1">
                 {myFeedback ? (
                   <div className="space-y-4">
                     {visibleFeedback.map((item, itemIndex) => (
