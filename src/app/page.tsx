@@ -443,10 +443,10 @@ export default function Home() {
               />
             </div>
             <div>
-              <h1 className="text-style-header-lg text-on-surface-primary-default">
+              <h1 className="text-2xl font-black tracking-tight text-on-surface-primary-default md:text-3xl">
                 Kindling
               </h1>
-              <p className="mt-1 text-style-body-overline text-on-surface-primary-subtle">
+              <p className="mt-1 text-sm font-medium text-on-surface-primary-subtle">
                 Blinded hiring feedback in the Kaizen design system
               </p>
             </div>
@@ -459,7 +459,7 @@ export default function Home() {
                 style={{ width: `${progress}%` }}
               />
             </div>
-            <div className="mt-2 flex justify-between text-style-body-overline text-on-surface-primary-subtle">
+            <div className="mt-2 flex justify-between text-xs font-medium uppercase tracking-wide text-on-surface-primary-subtle">
               <span>{Object.keys(submitted).length} submitted</span>
               <span>{candidates.length} candidates</span>
             </div>
@@ -472,10 +472,10 @@ export default function Home() {
             <aside className="flex min-h-0 flex-col rounded-3xl border border-stroke-default bg-surface-primary p-4 shadow-elevation">
               <div className="mb-3 flex shrink-0 items-center justify-between">
                 <div>
-                  <div className="text-style-body-lg-semibold text-on-surface-primary-default">
+                  <div className="text-lg font-black text-on-surface-primary-default">
                     Candidate stack
                   </div>
-                  <div className="text-style-body-caption text-on-surface-primary-subtle">
+                  <div className="text-xs font-normal text-on-surface-primary-subtle">
                     Pick a profile to review.
                   </div>
                 </div>
@@ -512,12 +512,12 @@ export default function Home() {
                           />
                         </div>
                         <div className="min-w-0 flex-1">
-                          <div className="truncate text-style-body-sm-semibold">
+                          <div className="truncate font-black">
                             {candidate.name}
                           </div>
                           <div
                             className={cn(
-                              "truncate text-style-body-caption",
+                              "truncate text-xs font-normal",
                               isSelected
                                 ? "text-on-surface-inverse-subtle"
                                 : "text-on-surface-primary-subtle"
@@ -579,10 +579,10 @@ export default function Home() {
               <div className="space-y-4 p-5">
                 <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
                   <div>
-                    <h2 className="text-style-header-lg text-on-surface-primary-default">
+                    <h2 className="text-3xl font-black tracking-tight text-on-surface-primary-default">
                       {selected.name}
                     </h2>
-                    <div className="mt-2 flex flex-wrap gap-x-4 gap-y-2 text-style-body-sm text-on-surface-primary-subtle">
+                    <div className="mt-2 flex flex-wrap gap-x-4 gap-y-2 text-sm font-normal text-on-surface-primary-subtle">
                       <span className="flex items-center gap-1.5">
                         <BriefcaseBusiness className="size-4" aria-hidden="true" />
                         {selected.role}
@@ -614,7 +614,7 @@ export default function Home() {
                   </div>
                 </div>
 
-                <p className="max-w-prose text-style-body-lg text-on-surface-primary-subtle">
+                <p className="max-w-prose text-base leading-7 text-on-surface-primary-subtle">
                   {selected.summary}
                 </p>
 
@@ -627,10 +627,10 @@ export default function Home() {
                 </div>
 
                 <div className="rounded-2xl bg-surface-inverse p-4 text-on-surface-inverse-default">
-                  <div className="text-style-body-overline text-on-surface-inverse-subtle">
+                  <div className="text-xs font-black uppercase tracking-wide text-on-surface-inverse-subtle">
                     Interview round
                   </div>
-                  <div className="mt-1 text-style-body-lg-semibold">
+                  <div className="mt-1 text-base font-semibold">
                     {selected.interview}
                   </div>
                 </div>
@@ -641,7 +641,7 @@ export default function Home() {
                       key={source}
                       type="button"
                       onClick={() => setSourceOpen(source)}
-                      className="rounded-2xl border border-stroke-default bg-surface-secondary px-3 py-2 text-style-body-sm-semibold text-on-surface-primary-default transition-colors duration-fast ease-move hover:bg-surface-secondary-hover"
+                      className="rounded-2xl border border-stroke-default bg-surface-secondary px-3 py-2 text-sm font-black text-on-surface-primary-default transition-colors duration-fast ease-move hover:bg-surface-secondary-hover"
                     >
                       {sourceLabels[source]}
                     </button>
@@ -657,10 +657,10 @@ export default function Home() {
               onSubmit={submitFeedback}
             >
               <div className="shrink-0">
-                <h2 className="text-style-header-sm text-on-surface-primary-default">
+                <h2 className="text-xl font-black tracking-tight text-on-surface-primary-default">
                   Your feedback
                 </h2>
-                <p className="mt-1 text-style-body-sm text-on-surface-primary-subtle">
+                <p className="mt-1 text-sm font-normal text-on-surface-primary-subtle">
                   Submit your read before the panel unlocks.
                 </p>
               </div>
@@ -676,7 +676,7 @@ export default function Home() {
                         type="button"
                         onClick={() => setDecision(option.value)}
                         className={cn(
-                          "flex h-11 items-center justify-center gap-1.5 rounded-2xl border-2 text-style-body-label transition-all duration-fast ease-move hover:-translate-y-0.5",
+                          "flex h-11 items-center justify-center gap-1.5 rounded-2xl border-2 text-xs font-black transition-all duration-fast ease-move hover:-translate-y-0.5",
                           option.className,
                           decision === option.value
                             ? "border-stroke-emphasis shadow-elevation"
@@ -700,11 +700,11 @@ export default function Home() {
                   <div className="flex items-center justify-between">
                     <label
                       htmlFor="score"
-                      className="text-style-body-sm-semibold text-on-surface-primary-default"
+                      className="text-sm font-black text-on-surface-primary-default"
                     >
                     Score
                     </label>
-                    <span className="flex items-center gap-1 rounded-full bg-surface-primary px-3 py-1 text-style-body-sm-semibold text-on-surface-primary-default shadow-elevation">
+                    <span className="flex items-center gap-1 rounded-full bg-surface-primary px-3 py-1 text-sm font-black text-on-surface-primary-default shadow-elevation">
                       <Star className="size-4 fill-current" />
                       {score}/5
                     </span>
@@ -723,10 +723,10 @@ export default function Home() {
                 <button
                   type="button"
                   onClick={() => setNotesOpen(true)}
-                  className="mt-3 flex h-10 w-full items-center justify-between rounded-2xl border border-stroke-default bg-surface-secondary px-4 text-left text-style-body-sm-semibold text-on-surface-primary-default transition-colors duration-fast ease-move hover:bg-surface-secondary-hover"
+                  className="mt-3 flex h-10 w-full items-center justify-between rounded-2xl border border-stroke-default bg-surface-secondary px-4 text-left text-sm font-black text-on-surface-primary-default transition-colors duration-fast ease-move hover:bg-surface-secondary-hover"
                 >
                   <span>Add notes</span>
-                  <span className="text-style-body-caption text-on-surface-primary-subtle">
+                  <span className="text-xs font-normal text-on-surface-primary-subtle">
                     {notes.trim() ? "Added" : "Optional"}
                   </span>
                 </button>
@@ -745,10 +745,10 @@ export default function Home() {
             <section className="flex min-h-0 flex-col rounded-3xl border border-stroke-default bg-surface-primary p-5 shadow-elevation">
               <div className="flex shrink-0 items-start justify-between gap-3">
                 <div>
-                  <h2 className="text-style-header-sm text-on-surface-primary-default">
+                  <h2 className="text-3xl font-black tracking-tight text-on-surface-primary-default">
                     Panel notes
                   </h2>
-                  <p className="mt-1 text-style-body-sm text-on-surface-primary-subtle">
+                  <p className="mt-1 text-sm font-normal text-on-surface-primary-subtle">
                     {myFeedback
                       ? "Unlocked because you submitted your read."
                       : "Hidden until you submit your own read."}
@@ -773,23 +773,23 @@ export default function Home() {
                         <article className="space-y-2 rounded-2xl border border-stroke-default bg-surface-secondary p-4">
                           <div className="flex flex-wrap items-start justify-between gap-3">
                             <div>
-                              <div className="text-style-body-sm-semibold text-on-surface-primary-default">
+                              <div className="font-black text-on-surface-primary-default">
                                 {item.author}
                               </div>
-                              <div className="text-style-body-caption text-on-surface-primary-subtle">
+                              <div className="text-xs font-normal text-on-surface-primary-subtle">
                                 {item.role} · {item.round} · {item.submittedAt}
                               </div>
                             </div>
                             <span
                               className={cn(
-                                "rounded-full border border-stroke-default px-3 py-1 text-style-body-label",
+                                "rounded-full border border-stroke-default px-3 py-1 text-xs font-black",
                                 decisionTone[item.decision]
                               )}
                             >
                               {item.decision} · {item.score}/5
                             </span>
                           </div>
-                          <p className="text-style-body-sm text-on-surface-primary-subtle">
+                          <p className="text-sm leading-5 text-on-surface-primary-subtle">
                             {item.notes}
                           </p>
                         </article>
@@ -801,8 +801,8 @@ export default function Home() {
                     <div className="flex size-14 items-center justify-center rounded-full bg-surface-primary/10">
                       <EyeOff className="size-6" aria-hidden="true" />
                     </div>
-                    <h3 className="mt-4 text-style-body-lg-semibold">Panel locked</h3>
-                    <p className="mt-2 max-w-xs text-style-body-sm text-on-surface-inverse-subtle">
+                    <h3 className="mt-4 text-xl font-black">Panel locked</h3>
+                    <p className="mt-2 max-w-xs text-sm leading-6 text-on-surface-inverse-subtle">
                       Submit your own feedback first. Then everyone else&apos;s
                       notes appear instantly.
                     </p>
@@ -815,21 +815,27 @@ export default function Home() {
       </div>
 
       {notesOpen ? (
-        <div className="fixed inset-0 z-modal flex items-center justify-center bg-surface-overlay p-4">
-          <div className="w-full max-w-md rounded-3xl border border-stroke-default bg-surface-primary p-5 shadow-elevation">
+        <div
+          className="fixed inset-0 z-500 flex items-center justify-center bg-black/50 p-4"
+          onClick={() => setNotesOpen(false)}
+        >
+          <div
+            className="w-full max-w-md rounded-3xl border border-stroke-default bg-white p-5 text-slate-950 shadow-2xl"
+            onClick={(event) => event.stopPropagation()}
+          >
             <div className="flex items-start justify-between gap-4">
               <div>
-                <h2 className="text-style-header-sm text-on-surface-primary-default">
+                <h2 className="text-2xl font-black tracking-tight text-slate-950">
                   Feedback note
                 </h2>
-                <p className="mt-1 text-style-body-sm text-on-surface-primary-subtle">
+                <p className="mt-1 text-sm font-normal text-slate-600">
                   Add context without crowding the scorecard.
                 </p>
               </div>
               <button
                 type="button"
                 onClick={() => setNotesOpen(false)}
-                className="flex size-9 items-center justify-center rounded-full bg-surface-secondary text-on-surface-primary-default hover:bg-surface-secondary-hover"
+                className="flex size-9 items-center justify-center rounded-full bg-slate-100 text-slate-700 hover:bg-slate-200"
                 aria-label="Close feedback note modal"
               >
                 <X className="size-4" aria-hidden="true" />
@@ -840,7 +846,7 @@ export default function Home() {
               value={notes}
               onChange={(event) => setNotes(event.target.value)}
               placeholder="Add the context you want captured before the panel opens..."
-              className="mt-5 min-h-48 w-full resize-none rounded-2xl border border-stroke-default bg-surface-secondary px-4 py-3 text-style-body-sm text-on-surface-primary-default outline-none placeholder:text-on-surface-primary-subtle focus-visible:border-stroke-emphasis focus-visible:ring-2 focus-visible:ring-stroke-emphasis"
+              className="mt-5 min-h-48 w-full resize-none rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-950 outline-none placeholder:text-slate-400 focus-visible:border-slate-950 focus-visible:ring-2 focus-visible:ring-slate-950/20"
             />
 
             <div className="mt-5 flex justify-end gap-3">
@@ -870,10 +876,10 @@ export default function Home() {
           >
             <div className="flex items-start justify-between gap-4">
               <div>
-                <h2 className="text-style-header-sm text-slate-950">
+                <h2 className="text-2xl font-black tracking-tight text-slate-950">
                   {sourceLabels[sourceOpen]}
                 </h2>
-                <p className="mt-1 text-style-body-sm text-slate-600">
+                <p className="mt-1 text-sm font-normal text-slate-600">
                   {selected.name} · {selected.role}
                 </p>
               </div>
@@ -887,7 +893,7 @@ export default function Home() {
               </button>
             </div>
 
-            <div className="mt-5 rounded-2xl border border-slate-200 bg-slate-50 p-5 text-style-body-lg text-slate-700">
+            <div className="mt-5 rounded-2xl border border-slate-200 bg-slate-50 p-5 text-base leading-8 text-slate-700">
               {selected.sources[sourceOpen]}
             </div>
 
