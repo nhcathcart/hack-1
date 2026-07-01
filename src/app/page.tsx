@@ -860,8 +860,14 @@ export default function Home() {
       ) : null}
 
       {sourceOpen ? (
-        <div className="fixed inset-0 z-500 flex items-center justify-center bg-black/50 p-4">
-          <div className="w-full max-w-lg rounded-3xl border border-stroke-default bg-white p-5 text-slate-950 shadow-2xl">
+        <div
+          className="fixed inset-0 z-500 flex items-center justify-center bg-black/50 p-4"
+          onClick={() => setSourceOpen(null)}
+        >
+          <div
+            className="w-full max-w-lg rounded-3xl border border-stroke-default bg-white p-5 text-slate-950 shadow-2xl"
+            onClick={(event) => event.stopPropagation()}
+          >
             <div className="flex items-start justify-between gap-4">
               <div>
                 <h2 className="text-style-header-sm text-slate-950">
