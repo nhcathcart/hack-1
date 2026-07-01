@@ -65,8 +65,8 @@ export default function DashboardPage() {
       <header className="sticky top-0 z-[50] border-b border-stroke-default bg-surface-secondary/85 backdrop-blur-md">
         <div className="mx-auto flex max-w-[1240px] items-center gap-4 px-7 py-3">
           <div className="flex items-center gap-3">
-            <div className="grid size-11 shrink-0 place-items-center rounded-xl border border-stroke-default bg-surface-tertiary">
-              <img src="/kindling-logo.svg" alt="Kindling" width={30} height={33} />
+            <div className="relative size-11 shrink-0 overflow-hidden rounded-xl border border-stroke-default">
+              <img src="/kindling-logo.png" alt="Kindling" className="absolute inset-0 h-full w-full object-cover" />
             </div>
             <div>
               <h1 className="text-style-header-md text-on-surface-primary-default">Kindling</h1>
@@ -259,7 +259,7 @@ export default function DashboardPage() {
 
         {/* FOOTER */}
         <div className="mt-11 flex items-center gap-3.5 rounded-2xl bg-surface-inverse px-6 py-4">
-          <img src="/kindling-logo.svg" alt="" width={22} height={24} className="shrink-0" />
+          <img src="/kindling-logo.png" alt="" className="size-6 shrink-0 rounded-md object-cover" />
           <div className="text-style-body-sm text-on-surface-inverse-subtle">
             <span className="text-on-surface-inverse-default" style={{ fontWeight: 600 }}>Fed by Ashby, rendered by Kindling.</span> Every number is driven by a single{" "}
             <span className="text-style-body-code" style={{ color: "var(--brand-spark)" }}>kindlingData</span> object in{" "}
