@@ -44,3 +44,19 @@
   --color-on-surface-secondary-default: #062620;
   --color-stroke-emphasis: #043b30;
 }
+
+/*
+ * Kindling ember scale — the dashboard's one domain accent ("from spark to
+ * offer"). Sourced entirely from UDS primitives (amber → danger) so it inherits
+ * the Canopy ramps and flips with .dark alongside the rest of the system. These
+ * are plain custom properties consumed by the /dashboard SVG/inline styles and
+ * src/lib/kindling-data.ts; they do NOT touch the UDS --color-*/--radius-*/
+ * --font-* namespaces, so the UDS @theme reset is unaffected.
+ */
+:root {
+  --ember-1: var(--palette-amber-400);
+  --ember-2: var(--palette-amber-500);
+  --ember-3: var(--palette-amber-600);
+  --ember-4: var(--palette-danger-600);
+  --ember-5: var(--palette-danger-700);
+}
