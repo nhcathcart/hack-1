@@ -20,3 +20,27 @@
  * these resolve to the declared fallbacks (system Inter / Georgia). Rebind here
  * if the app later loads the real faces via next/font.
  */
+
+/*
+ * Kaizen brand layer — pulls the app toward kaizenlabs.co: deep forest-green
+ * (#043B30) immersive panels + primary actions, warm cream surfaces, and
+ * deep-green tone-on-tone text. Overriding UDS semantic tokens at :root
+ * rebrands every bg-surface-inverse / bg-button-primary / bg-surface-secondary
+ * / text-on-* usage at once — the supported UDS consumer override path.
+ */
+:root {
+  --color-surface-inverse: #043b30;
+  --color-on-surface-inverse-default: #f5f2ea;
+  --color-on-surface-inverse-subtle: #9fb8ac;
+
+  --color-button-primary: #043b30;
+  --color-button-primary-hover: #062620;
+
+  --color-surface-secondary: #f2eee2;
+  --color-surface-secondary-hover: #e9e2d0;
+  --color-surface-tertiary: #ece5d4;
+
+  --color-on-surface-primary-default: #062620;
+  --color-on-surface-secondary-default: #062620;
+  --color-stroke-emphasis: #043b30;
+}

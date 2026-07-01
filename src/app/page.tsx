@@ -4,16 +4,13 @@ import { FormEvent, useMemo, useState } from "react";
 import Image from "next/image";
 import {
   BriefcaseBusiness,
-  Check,
   ChevronLeft,
   ChevronRight,
   EyeOff,
-  Heart,
   LockKeyhole,
   MapPin,
   MessageCircle,
   Send,
-  Star,
   X,
 } from "lucide-react";
 
@@ -22,14 +19,22 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 
-type Decision = "Love" | "Like" | "Maybe" | "Pass";
+type Rating = "Strong No" | "No" | "Yes" | "Strong Yes";
+
+type MetricKey =
+  | "government"
+  | "learning"
+  | "customer"
+  | "prioritization"
+  | "ambiguity"
+  | "collaboration";
 
 type Feedback = {
   author: string;
   role: string;
   round: string;
-  decision: Decision;
-  score: number;
+  decision: Rating;
+  scores: Record<MetricKey, number>;
   submittedAt: string;
   notes: string;
 };
@@ -52,6 +57,146 @@ type Candidate = {
   };
   feedback: Feedback[];
 };
+
+const RATINGS: Rating[] = ["Strong No", "No", "Yes", "Strong Yes"];
+
+const ratingValue: Record<Rating, number> = {
+  "Strong No": 1,
+  No: 2,
+  Yes: 3,
+  "Strong Yes": 4,
+};
+
+const ratingByValue: Record<number, Rating> = {
+  1: "Strong No",
+  2: "No",
+  3: "Yes",
+  4: "Strong Yes",
+};
+
+// Playful sentiment styling for the 4-point scale (Kindling = spark → 🔥 tops it).
+const ratingStyle: Record<
+  Rating,
+  { emoji: string; base: string; ring: string }
+> = {
+  "Strong No": {
+    emoji: "🙅",
+    base: "bg-[#fbe6e2] text-[#b23a2b]",
+    ring: "ring-[#b23a2b]",
+  },
+  No: { emoji: "👎", base: "bg-[#fbeedd] text-[#a4640a]", ring: "ring-[#a4640a]" },
+  Yes: { emoji: "👍", base: "bg-[#e2f1e6] text-[#1f7a4d]", ring: "ring-[#1f7a4d]" },
+  "Strong Yes": {
+    emoji: "🔥",
+    base: "bg-[#043b30] text-[#f5f2ea]",
+    ring: "ring-[#043b30]",
+  },
+};
+
+// Evaluation rubric — each metric is scored on the 4-point Strong No→Strong Yes scale.
+const metrics: Array<{
+  key: MetricKey;
+  title: string;
+  short: string;
+  evaluating: string;
+  criteria: Record<number, string>;
+}> = [
+  {
+    key: "government",
+    title: "Government & Stakeholder Management",
+    short: "Government",
+    evaluating:
+      "Navigating government bureaucracy, building relationships across diverse stakeholders, adapting communication style.",
+    criteria: {
+      4: "Deep understanding of government challenges (procurement, budget cycles, political dynamics). Specific examples of adapting communication for technical vs. non-technical stakeholders. Has worked across multiple stakeholder types. Shows patience and empathy for government pace.",
+      3: "Has relevant government or complex stakeholder experience. Recognizes key differences. Can articulate adaptation for different stakeholder types. Solid stakeholder management.",
+      2: "Limited government experience. Understands some nuances but lacks depth. Less experience adapting to varied technical literacy.",
+      1: "No government or analogous experience. Doesn't recognize unique challenges. Limited stakeholder diversity experience. May show impatience with bureaucracy.",
+    },
+  },
+  {
+    key: "learning",
+    title: "Product Intelligence & Learning Agility",
+    short: "Learning agility",
+    evaluating:
+      "Self-directed learning, systematic approach to product knowledge, track record of becoming a trusted product expert.",
+    criteria: {
+      4: 'Comprehensive learning approach: hands-on exploration, documentation, shadowing, building test scenarios. Became an SME quickly in past roles. Goes beyond surface to understand the "why" behind product decisions.',
+      3: "Clear learning methodology with multiple approaches. Successfully ramped on complex products. Balances independent learning with asking questions. Shows curiosity.",
+      2: "Some approach to learning but lacks structure. May rely heavily on training without hands-on exploration. Previous ramp examples are basic.",
+      1: "Passive learning (waits for training). No concrete methodology. No evidence of becoming a product expert. Lacks curiosity.",
+    },
+  },
+  {
+    key: "customer",
+    title: "Customer Success Orientation & Impact Measurement",
+    short: "Customer success",
+    evaluating:
+      "Customer-centric mindset, understanding deployment is the beginning not the end, defining success metrics, ownership of outcomes.",
+    criteria: {
+      4: "Defines success as the customer achieving goals, not just go-live. Articulates specific metrics: adoption, user feedback, support tickets, revenue, time-to-value. Describes post-launch engagement. Owns long-term customer health.",
+      3: "Understands deployment is a milestone, not a finish line. Mentions several success metrics. Some post-launch activities. Cares about customer outcomes.",
+      2: "Defines success primarily as technical completion. Limited metrics discussion. May not connect work to business outcomes.",
+      1: 'Views success as "project complete." No outcome measurement. Transactional mindset.',
+    },
+  },
+  {
+    key: "prioritization",
+    title: "Prioritization & Expectation Management",
+    short: "Prioritization",
+    evaluating:
+      "Managing multiple customers, making defensible prioritization decisions, communicating difficult messages, maintaining relationships.",
+    criteria: {
+      4: "Specific example with competing priorities. Systematic framework (urgency, impact, customer health, contracts). Transparency with customers. When saying no: empathy, clear rationale, alternatives. Maintains relationships.",
+      3: "Solid prioritization example. Reasonable approach with most key factors. Delivers difficult messages professionally with some empathy. Generally maintains relationships.",
+      2: "Example lacks depth or framework is unclear. May prioritize on a single factor. When saying no: lacks warmth or clear rationale. Some relationship-management gaps.",
+      1: "Struggles with competing priorities or relies on others. Avoids saying no or delivers poorly. Limited relationship management.",
+    },
+  },
+  {
+    key: "ambiguity",
+    title: "Navigating Ambiguity & Problem-Solving",
+    short: "Ambiguity",
+    evaluating:
+      "Comfort with incomplete information, requirements gathering, asking clarifying questions, guiding customers to their true needs.",
+    criteria: {
+      4: 'Compelling example of navigating ambiguity. Structured discovery: probing questions, uncovering root needs vs. surface requests, validating assumptions, iterating. Digs deeper on "legacy system" requests. Balances empathy with expertise.',
+      3: "Good example of unclear requirements. Systematic approach. Can differentiate wants from needs. Comfortable with some ambiguity.",
+      2: "Example limited or struggles with unclear requirements. May take requirements at face value. Less evidence of guiding customer thinking.",
+      1: "Uncomfortable with ambiguity or waits for clarity. Takes requests literally. No sophisticated requirements gathering.",
+    },
+  },
+  {
+    key: "collaboration",
+    title: "Cross-Functional Collaboration & Project Coordination",
+    short: "Collaboration",
+    evaluating:
+      "Working across technical teams, project management, communication effectiveness, keeping projects on track.",
+    criteria: {
+      4: "Specific example of complex cross-functional coordination. Clear communication cadence, proactive blocker identification, facilitated technical discussions, kept teams aligned on customer needs. Used tools/processes. Shows influence without authority.",
+      3: "Good cross-functional example. Understands working with technical teams. Maintained alignment and met the deadline. Communicated effectively.",
+      2: "Basic cross-functional experience. May have relied heavily on others. Limited proactive coordination or conflict resolution.",
+      1: "Limited cross-functional experience or struggled to coordinate. Unclear on working with technical teams. Caused misalignment.",
+    },
+  },
+];
+
+const METRIC_KEYS = metrics.map((m) => m.key);
+
+function buildScores(seed: number): Record<MetricKey, number> {
+  return metrics.reduce(
+    (acc, metric, i) => {
+      acc[metric.key] = 2 + ((seed + i) % 3); // deterministic 2–4 spread
+      return acc;
+    },
+    {} as Record<MetricKey, number>
+  );
+}
+
+function averageScore(scores: Record<MetricKey, number>): number {
+  const values = METRIC_KEYS.map((k) => scores[k]);
+  return values.reduce((sum, v) => sum + v, 0) / values.length;
+}
 
 const teamMembers = [
   {
@@ -310,8 +455,8 @@ const candidates: Candidate[] = teamMembers.map((member, index) => {
         author: peerOne.name,
         role: peerOne.title,
         round: rounds[(index + 1) % rounds.length],
-        decision: index % 5 === 0 ? "Love" : "Like",
-        score: index % 5 === 0 ? 5 : 4,
+        decision: index % 5 === 0 ? "Strong Yes" : "Yes",
+        scores: buildScores(index),
         submittedAt: index % 3 === 0 ? "Today" : "Yesterday",
         notes:
           "Strong signal on mission fit and operating pace. They were concrete about tradeoffs and stayed grounded in public-sector user outcomes.",
@@ -320,8 +465,8 @@ const candidates: Candidate[] = teamMembers.map((member, index) => {
         author: peerTwo.name,
         role: peerTwo.title,
         round: rounds[(index + 2) % rounds.length],
-        decision: index % 4 === 0 ? "Maybe" : "Like",
-        score: index % 4 === 0 ? 3 : 4,
+        decision: index % 4 === 0 ? "No" : "Yes",
+        scores: buildScores(index + 2),
         submittedAt: index % 2 === 0 ? "9:17 AM" : "Mon",
         notes:
           "Good discussion overall. I would probe one more example around cross-functional conflict before making the final call.",
@@ -330,55 +475,23 @@ const candidates: Candidate[] = teamMembers.map((member, index) => {
   };
 });
 
-const decisionOptions: Array<{
-  value: Decision;
-  label: string;
-  icon: typeof Heart;
-  className: string;
-}> = [
-  {
-    value: "Pass",
-    label: "Pass",
-    icon: X,
-    className: "bg-surface-danger text-on-surface-danger",
-  },
-  {
-    value: "Maybe",
-    label: "Maybe",
-    icon: Star,
-    className: "bg-surface-secondary text-on-surface-secondary-default",
-  },
-  {
-    value: "Like",
-    label: "Like",
-    icon: Check,
-    className: "bg-surface-tertiary text-on-surface-primary-default",
-  },
-  {
-    value: "Love",
-    label: "Love",
-    icon: Heart,
-    className: "bg-surface-success text-on-surface-success",
-  },
-];
-
-const decisionTone: Record<Decision, string> = {
-  Love: "bg-surface-success text-on-surface-success",
-  Like: "bg-surface-secondary text-on-surface-secondary-default",
-  Maybe: "bg-surface-tertiary text-on-surface-primary-default",
-  Pass: "bg-surface-danger text-on-surface-danger",
-};
-
 export default function Home() {
   const [index, setIndex] = useState(0);
   const [submitted, setSubmitted] = useState<Record<string, Feedback>>({});
-  const [decision, setDecision] = useState<Decision>("Like");
-  const [score, setScore] = useState(4);
+  const [decision, setDecision] = useState<Rating>("Yes");
+  const [scores, setScores] = useState<Record<MetricKey, number>>(
+    () =>
+      Object.fromEntries(metrics.map((m) => [m.key, 3])) as Record<
+        MetricKey,
+        number
+      >
+  );
   const [notes, setNotes] = useState("");
   const [notesOpen, setNotesOpen] = useState(false);
   const [sourceOpen, setSourceOpen] = useState<keyof Candidate["sources"] | null>(
     null
   );
+  const [rubricOpen, setRubricOpen] = useState<MetricKey | null>(null);
 
   const selected = candidates[index];
   const myFeedback = submitted[selected.id];
@@ -397,13 +510,23 @@ export default function Home() {
     whisper: "Whisper notes",
   };
 
+  const openMetric = rubricOpen
+    ? metrics.find((m) => m.key === rubricOpen) ?? null
+    : null;
+
   function selectCandidate(nextIndex: number) {
     const normalized = (nextIndex + candidates.length) % candidates.length;
     const candidate = candidates[normalized];
 
     setIndex(normalized);
-    setDecision(submitted[candidate.id]?.decision ?? "Like");
-    setScore(submitted[candidate.id]?.score ?? 4);
+    setDecision(submitted[candidate.id]?.decision ?? "Yes");
+    setScores(
+      submitted[candidate.id]?.scores ??
+        (Object.fromEntries(metrics.map((m) => [m.key, 3])) as Record<
+          MetricKey,
+          number
+        >)
+    );
     setNotes(submitted[candidate.id]?.notes ?? "");
   }
 
@@ -417,7 +540,7 @@ export default function Home() {
         role: "Interview panelist",
         round: "Your interview",
         decision,
-        score,
+        scores,
         submittedAt: "Just now",
         notes:
           notes.trim() ||
@@ -443,10 +566,10 @@ export default function Home() {
               />
             </div>
             <div>
-              <h1 className="text-2xl font-black tracking-tight text-on-surface-primary-default md:text-3xl">
+              <h1 className="text-style-header-lg text-on-surface-primary-default">
                 Kindling
               </h1>
-              <p className="mt-1 text-sm font-medium text-on-surface-primary-subtle">
+              <p className="mt-1 text-style-body-overline text-on-surface-primary-subtle">
                 Blinded hiring feedback in the Kaizen design system
               </p>
             </div>
@@ -459,7 +582,7 @@ export default function Home() {
                 style={{ width: `${progress}%` }}
               />
             </div>
-            <div className="mt-2 flex justify-between text-xs font-medium uppercase tracking-wide text-on-surface-primary-subtle">
+            <div className="mt-2 flex justify-between text-style-body-overline text-on-surface-primary-subtle">
               <span>{Object.keys(submitted).length} submitted</span>
               <span>{candidates.length} candidates</span>
             </div>
@@ -472,10 +595,10 @@ export default function Home() {
             <aside className="flex min-h-0 flex-col rounded-3xl border border-stroke-default bg-surface-primary p-4 shadow-elevation">
               <div className="mb-3 flex shrink-0 items-center justify-between border-b border-stroke-default pb-3">
                 <div>
-                  <div className="text-lg font-black text-on-surface-primary-default">
+                  <div className="text-style-body-lg-semibold text-on-surface-primary-default">
                     Candidate stack
                   </div>
-                  <div className="text-xs font-normal text-on-surface-primary-subtle">
+                  <div className="text-style-body-caption text-on-surface-primary-subtle">
                     Pick a profile to review.
                   </div>
                 </div>
@@ -484,7 +607,7 @@ export default function Home() {
                 </Badge>
               </div>
 
-              <div className="min-h-0 flex-1 space-y-3 overflow-y-auto px-1 pb-1 pt-1">
+              <div className="min-h-0 flex-1 space-y-3 overflow-y-auto pr-1">
                 {candidates.map((candidate, candidateIndex) => {
                   const isSelected = candidate.id === selected.id;
                   const isUnlocked = Boolean(submitted[candidate.id]);
@@ -512,12 +635,12 @@ export default function Home() {
                           />
                         </div>
                         <div className="min-w-0 flex-1">
-                          <div className="truncate font-black">
+                          <div className="truncate text-style-body-sm-semibold">
                             {candidate.name}
                           </div>
                           <div
                             className={cn(
-                              "truncate text-xs font-normal",
+                              "truncate text-style-body-caption",
                               isSelected
                                 ? "text-on-surface-inverse-subtle"
                                 : "text-on-surface-primary-subtle"
@@ -579,10 +702,10 @@ export default function Home() {
               <div className="space-y-4 p-5">
                 <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
                   <div>
-                    <h2 className="text-3xl font-black tracking-tight text-on-surface-primary-default">
+                    <h2 className="text-style-header-lg text-on-surface-primary-default">
                       {selected.name}
                     </h2>
-                    <div className="mt-2 flex flex-wrap gap-x-4 gap-y-2 text-sm font-normal text-on-surface-primary-subtle">
+                    <div className="mt-2 flex flex-wrap gap-x-4 gap-y-2 text-style-body-sm text-on-surface-primary-subtle">
                       <span className="flex items-center gap-1.5">
                         <BriefcaseBusiness className="size-4" aria-hidden="true" />
                         {selected.role}
@@ -614,7 +737,7 @@ export default function Home() {
                   </div>
                 </div>
 
-                <p className="max-w-prose text-base leading-7 text-on-surface-primary-subtle">
+                <p className="max-w-prose text-style-body-lg text-on-surface-primary-subtle">
                   {selected.summary}
                 </p>
 
@@ -627,10 +750,10 @@ export default function Home() {
                 </div>
 
                 <div className="rounded-2xl bg-surface-inverse p-4 text-on-surface-inverse-default">
-                  <div className="text-xs font-black uppercase tracking-wide text-on-surface-inverse-subtle">
+                  <div className="text-style-body-overline text-on-surface-inverse-subtle">
                     Interview round
                   </div>
-                  <div className="mt-1 text-base font-semibold">
+                  <div className="mt-1 text-style-body-lg-semibold">
                     {selected.interview}
                   </div>
                 </div>
@@ -641,7 +764,7 @@ export default function Home() {
                       key={source}
                       type="button"
                       onClick={() => setSourceOpen(source)}
-                      className="rounded-2xl border border-stroke-default bg-surface-secondary px-3 py-2 text-sm font-black text-on-surface-primary-default transition-colors duration-fast ease-move hover:bg-surface-secondary-hover"
+                      className="rounded-2xl border border-stroke-default bg-surface-secondary px-3 py-2 text-style-body-sm-semibold text-on-surface-primary-default transition-colors duration-fast ease-move hover:bg-surface-secondary-hover"
                     >
                       {sourceLabels[source]}
                     </button>
@@ -657,76 +780,114 @@ export default function Home() {
               onSubmit={submitFeedback}
             >
               <div className="shrink-0">
-                <h2 className="text-xl font-black tracking-tight text-on-surface-primary-default">
+                <h2 className="text-style-header-sm text-on-surface-primary-default">
                   Your feedback
                 </h2>
-                <p className="mt-1 text-sm font-normal text-on-surface-primary-subtle">
+                <p className="mt-1 text-style-body-sm text-on-surface-primary-subtle">
                   Submit your read before the panel unlocks.
                 </p>
               </div>
 
               <div className="min-h-0 flex-1 overflow-y-auto pr-1">
-                <div className="mt-3 grid grid-cols-4 gap-2">
-                  {decisionOptions.map((option) => {
-                    const Icon = option.icon;
-
-                    return (
-                      <button
-                        key={option.value}
-                        type="button"
-                        onClick={() => setDecision(option.value)}
-                        className={cn(
-                          "flex h-11 items-center justify-center gap-1.5 rounded-2xl border-2 text-xs font-black transition-all duration-fast ease-move hover:-translate-y-0.5",
-                          option.className,
-                          decision === option.value
-                            ? "border-stroke-emphasis shadow-elevation"
-                            : "border-transparent"
-                        )}
-                      >
-                        <Icon
+                <div className="mt-3">
+                  <div className="text-style-body-overline text-on-surface-primary-subtle">
+                    Overall read
+                  </div>
+                  <div className="mt-2 grid grid-cols-2 gap-2">
+                    {RATINGS.map((rating) => {
+                      const rs = ratingStyle[rating];
+                      const active = decision === rating;
+                      return (
+                        <button
+                          key={rating}
+                          type="button"
+                          onClick={() => setDecision(rating)}
                           className={cn(
-                            "size-4",
-                            option.value === "Love" ? "fill-current" : ""
+                            "flex h-14 items-center justify-center gap-2 rounded-2xl text-style-body-sm-semibold ring-2 transition-all duration-fast ease-move hover:-translate-y-0.5 active:scale-95",
+                            rs.base,
+                            active
+                              ? rs.ring
+                              : "opacity-80 ring-transparent hover:opacity-100"
                           )}
-                          aria-hidden="true"
-                        />
-                        {option.label}
-                      </button>
-                    );
-                  })}
+                        >
+                          <span className="text-base" aria-hidden="true">
+                            {rs.emoji}
+                          </span>
+                          {rating}
+                        </button>
+                      );
+                    })}
+                  </div>
                 </div>
 
-                <div className="mt-3 rounded-2xl border border-stroke-default bg-surface-secondary p-3">
-                  <div className="flex items-center justify-between">
-                    <label
-                      htmlFor="score"
-                      className="text-sm font-black text-on-surface-primary-default"
-                    >
-                    Score
-                    </label>
-                    <span className="flex items-center gap-1 rounded-full bg-surface-primary px-3 py-1 text-sm font-black text-on-surface-primary-default shadow-elevation">
-                      <Star className="size-4 fill-current" />
-                      {score}/5
-                    </span>
+                <div className="mt-4 flex items-center justify-between">
+                  <div className="text-style-body-overline text-on-surface-primary-subtle">
+                    Scorecard
                   </div>
-                  <input
-                    id="score"
-                    type="range"
-                    min="1"
-                    max="5"
-                    value={score}
-                    onChange={(event) => setScore(Number(event.target.value))}
-                    className="mt-2 w-full [accent-color:var(--color-surface-inverse)]"
-                  />
+                  <span className="rounded-full bg-surface-inverse px-3 py-1 text-style-body-label text-on-surface-inverse-default">
+                    {averageScore(scores).toFixed(1)}/4 avg
+                  </span>
+                </div>
+
+                <div className="mt-2 space-y-3">
+                  {metrics.map((metric) => (
+                    <div
+                      key={metric.key}
+                      className="rounded-2xl border border-stroke-default bg-surface-secondary p-3"
+                    >
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="text-style-body-sm-semibold text-on-surface-primary-default">
+                          {metric.title}
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => setRubricOpen(metric.key)}
+                          className="shrink-0 rounded-full px-2 py-0.5 text-style-body-caption text-on-surface-primary-subtle transition-colors hover:bg-surface-tertiary"
+                        >
+                          Rubric
+                        </button>
+                      </div>
+                      <div className="mt-2 grid grid-cols-4 gap-1.5">
+                        {RATINGS.map((rating) => {
+                          const value = ratingValue[rating];
+                          const rs = ratingStyle[rating];
+                          const active = scores[metric.key] === value;
+                          return (
+                            <button
+                              key={rating}
+                              type="button"
+                              title={`${rating} — ${metric.criteria[value]}`}
+                              onClick={() =>
+                                setScores((current) => ({
+                                  ...current,
+                                  [metric.key]: value,
+                                }))
+                              }
+                              className={cn(
+                                "flex h-9 items-center justify-center gap-1 rounded-xl text-style-body-label ring-2 transition-all duration-fast ease-move hover:-translate-y-0.5 active:scale-95",
+                                rs.base,
+                                active
+                                  ? rs.ring
+                                  : "opacity-60 ring-transparent hover:opacity-100"
+                              )}
+                            >
+                              <span aria-hidden="true">{rs.emoji}</span>
+                              <span className="tabular-nums">{value}</span>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ))}
                 </div>
 
                 <button
                   type="button"
                   onClick={() => setNotesOpen(true)}
-                  className="mt-3 flex h-10 w-full items-center justify-between rounded-2xl border border-stroke-default bg-surface-secondary px-4 text-left text-sm font-black text-on-surface-primary-default transition-colors duration-fast ease-move hover:bg-surface-secondary-hover"
+                  className="mt-3 flex h-10 w-full items-center justify-between rounded-2xl border border-stroke-default bg-surface-secondary px-4 text-left text-style-body-sm-semibold text-on-surface-primary-default transition-colors duration-fast ease-move hover:bg-surface-secondary-hover"
                 >
                   <span>Add notes</span>
-                  <span className="text-xs font-normal text-on-surface-primary-subtle">
+                  <span className="text-style-body-caption text-on-surface-primary-subtle">
                     {notes.trim() ? "Added" : "Optional"}
                   </span>
                 </button>
@@ -745,10 +906,10 @@ export default function Home() {
             <section className="flex min-h-0 flex-col rounded-3xl border border-stroke-default bg-surface-primary p-5 shadow-elevation">
               <div className="flex shrink-0 items-start justify-between gap-3">
                 <div>
-                  <h2 className="text-3xl font-black tracking-tight text-on-surface-primary-default">
+                  <h2 className="text-style-header-sm text-on-surface-primary-default">
                     Panel notes
                   </h2>
-                  <p className="mt-1 text-sm font-normal text-on-surface-primary-subtle">
+                  <p className="mt-1 text-style-body-sm text-on-surface-primary-subtle">
                     {myFeedback
                       ? "Unlocked because you submitted your read."
                       : "Hidden until you submit your own read."}
@@ -773,23 +934,46 @@ export default function Home() {
                         <article className="space-y-2 rounded-2xl border border-stroke-default bg-surface-secondary p-4">
                           <div className="flex flex-wrap items-start justify-between gap-3">
                             <div>
-                              <div className="font-black text-on-surface-primary-default">
+                              <div className="text-style-body-sm-semibold text-on-surface-primary-default">
                                 {item.author}
                               </div>
-                              <div className="text-xs font-normal text-on-surface-primary-subtle">
+                              <div className="text-style-body-caption text-on-surface-primary-subtle">
                                 {item.role} · {item.round} · {item.submittedAt}
                               </div>
                             </div>
                             <span
                               className={cn(
-                                "rounded-full border border-stroke-default px-3 py-1 text-xs font-black",
-                                decisionTone[item.decision]
+                                "flex items-center gap-1 rounded-full px-3 py-1 text-style-body-label",
+                                ratingStyle[item.decision].base
                               )}
                             >
-                              {item.decision} · {item.score}/5
+                              <span aria-hidden="true">
+                                {ratingStyle[item.decision].emoji}
+                              </span>
+                              {item.decision} ·{" "}
+                              {averageScore(item.scores).toFixed(1)}/4
                             </span>
                           </div>
-                          <p className="text-sm leading-5 text-on-surface-primary-subtle">
+                          <div className="grid grid-cols-2 gap-x-3 gap-y-1">
+                            {metrics.map((metric) => (
+                              <div
+                                key={metric.key}
+                                className="flex items-center justify-between gap-2"
+                              >
+                                <span className="truncate text-style-body-caption text-on-surface-primary-subtle">
+                                  {metric.short}
+                                </span>
+                                <span className="shrink-0" aria-hidden="true">
+                                  {
+                                    ratingStyle[
+                                      ratingByValue[item.scores[metric.key]]
+                                    ].emoji
+                                  }
+                                </span>
+                              </div>
+                            ))}
+                          </div>
+                          <p className="text-style-body-sm text-on-surface-primary-subtle">
                             {item.notes}
                           </p>
                         </article>
@@ -801,8 +985,8 @@ export default function Home() {
                     <div className="flex size-14 items-center justify-center rounded-full bg-surface-primary/10">
                       <EyeOff className="size-6" aria-hidden="true" />
                     </div>
-                    <h3 className="mt-4 text-xl font-black">Panel locked</h3>
-                    <p className="mt-2 max-w-xs text-sm leading-6 text-on-surface-inverse-subtle">
+                    <h3 className="mt-4 text-style-body-lg-semibold">Panel locked</h3>
+                    <p className="mt-2 max-w-xs text-style-body-sm text-on-surface-inverse-subtle">
                       Submit your own feedback first. Then everyone else&apos;s
                       notes appear instantly.
                     </p>
@@ -816,26 +1000,26 @@ export default function Home() {
 
       {notesOpen ? (
         <div
-          className="fixed inset-0 z-500 flex items-center justify-center bg-black/50 p-4"
+          className="fixed inset-0 z-modal flex items-center justify-center bg-surface-overlay p-4"
           onClick={() => setNotesOpen(false)}
         >
           <div
-            className="w-full max-w-md rounded-3xl border border-stroke-default bg-white p-5 text-slate-950 shadow-2xl"
+            className="w-full max-w-md rounded-3xl border border-stroke-default bg-surface-primary p-5 shadow-elevation"
             onClick={(event) => event.stopPropagation()}
           >
             <div className="flex items-start justify-between gap-4">
               <div>
-                <h2 className="text-2xl font-black tracking-tight text-slate-950">
+                <h2 className="text-style-header-sm text-on-surface-primary-default">
                   Feedback note
                 </h2>
-                <p className="mt-1 text-sm font-normal text-slate-600">
+                <p className="mt-1 text-style-body-sm text-on-surface-primary-subtle">
                   Add context without crowding the scorecard.
                 </p>
               </div>
               <button
                 type="button"
                 onClick={() => setNotesOpen(false)}
-                className="flex size-9 items-center justify-center rounded-full bg-slate-100 text-slate-700 hover:bg-slate-200"
+                className="flex size-9 items-center justify-center rounded-full bg-surface-secondary text-on-surface-primary-default hover:bg-surface-secondary-hover"
                 aria-label="Close feedback note modal"
               >
                 <X className="size-4" aria-hidden="true" />
@@ -846,7 +1030,7 @@ export default function Home() {
               value={notes}
               onChange={(event) => setNotes(event.target.value)}
               placeholder="Add the context you want captured before the panel opens..."
-              className="mt-5 min-h-48 w-full resize-none rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-950 outline-none placeholder:text-slate-400 focus-visible:border-slate-950 focus-visible:ring-2 focus-visible:ring-slate-950/20"
+              className="mt-5 min-h-48 w-full resize-none rounded-2xl border border-stroke-default bg-surface-secondary px-4 py-3 text-style-body-sm text-on-surface-primary-default outline-none placeholder:text-on-surface-primary-subtle focus-visible:border-stroke-emphasis focus-visible:ring-2 focus-visible:ring-stroke-emphasis"
             />
 
             <div className="mt-5 flex justify-end gap-3">
@@ -867,33 +1051,33 @@ export default function Home() {
 
       {sourceOpen ? (
         <div
-          className="fixed inset-0 z-500 flex items-center justify-center bg-black/50 p-4"
+          className="fixed inset-0 z-modal flex items-center justify-center bg-surface-overlay p-4"
           onClick={() => setSourceOpen(null)}
         >
           <div
-            className="w-full max-w-lg rounded-3xl border border-stroke-default bg-white p-5 text-slate-950 shadow-2xl"
+            className="w-full max-w-lg rounded-3xl border border-stroke-default bg-surface-primary p-5 shadow-elevation"
             onClick={(event) => event.stopPropagation()}
           >
             <div className="flex items-start justify-between gap-4">
               <div>
-                <h2 className="text-2xl font-black tracking-tight text-slate-950">
+                <h2 className="text-style-header-sm text-on-surface-primary-default">
                   {sourceLabels[sourceOpen]}
                 </h2>
-                <p className="mt-1 text-sm font-normal text-slate-600">
+                <p className="mt-1 text-style-body-sm text-on-surface-primary-subtle">
                   {selected.name} · {selected.role}
                 </p>
               </div>
               <button
                 type="button"
                 onClick={() => setSourceOpen(null)}
-                className="flex size-9 items-center justify-center rounded-full bg-slate-100 text-slate-700 hover:bg-slate-200"
+                className="flex size-9 items-center justify-center rounded-full bg-surface-secondary text-on-surface-primary-default hover:bg-surface-secondary-hover"
                 aria-label="Close source modal"
               >
                 <X className="size-4" aria-hidden="true" />
               </button>
             </div>
 
-            <div className="mt-5 rounded-2xl border border-slate-200 bg-slate-50 p-5 text-base leading-8 text-slate-700">
+            <div className="mt-5 rounded-2xl border border-stroke-default bg-surface-secondary p-5 text-style-body-lg text-on-surface-primary-subtle">
               {selected.sources[sourceOpen]}
             </div>
 
@@ -901,6 +1085,80 @@ export default function Home() {
               <Button type="button" onClick={() => setSourceOpen(null)}>
                 Done
               </Button>
+            </div>
+          </div>
+        </div>
+      ) : null}
+
+      {openMetric ? (
+        <div
+          className="fixed inset-0 z-modal flex items-center justify-center bg-surface-overlay p-4"
+          onClick={() => setRubricOpen(null)}
+        >
+          <div
+            className="w-full max-w-lg rounded-3xl border border-stroke-default bg-surface-primary p-5 shadow-elevation"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <div className="text-style-body-overline text-on-surface-primary-subtle">
+                  Scoring rubric
+                </div>
+                <h2 className="mt-1 text-style-header-sm text-on-surface-primary-default">
+                  {openMetric.title}
+                </h2>
+                <p className="mt-1 text-style-body-sm text-on-surface-primary-subtle">
+                  {openMetric.evaluating}
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setRubricOpen(null)}
+                className="flex size-9 shrink-0 items-center justify-center rounded-full bg-surface-secondary text-on-surface-primary-default hover:bg-surface-secondary-hover"
+                aria-label="Close rubric modal"
+              >
+                <X className="size-4" aria-hidden="true" />
+              </button>
+            </div>
+
+            <div className="mt-4 space-y-2">
+              {[4, 3, 2, 1].map((value) => {
+                const rating = ratingByValue[value];
+                const rs = ratingStyle[rating];
+                const active = scores[openMetric.key] === value;
+                return (
+                  <button
+                    key={value}
+                    type="button"
+                    onClick={() => {
+                      setScores((current) => ({
+                        ...current,
+                        [openMetric.key]: value,
+                      }));
+                      setRubricOpen(null);
+                    }}
+                    className={cn(
+                      "flex w-full items-start gap-3 rounded-2xl border p-3 text-left transition-all duration-fast ease-move hover:-translate-y-0.5",
+                      active
+                        ? "border-stroke-emphasis bg-surface-secondary"
+                        : "border-stroke-default"
+                    )}
+                  >
+                    <span
+                      className={cn(
+                        "flex h-8 shrink-0 items-center gap-1 rounded-full px-2.5 text-style-body-label",
+                        rs.base
+                      )}
+                    >
+                      <span aria-hidden="true">{rs.emoji}</span>
+                      {value} · {rating}
+                    </span>
+                    <span className="text-style-body-sm text-on-surface-primary-default">
+                      {openMetric.criteria[value]}
+                    </span>
+                  </button>
+                );
+              })}
             </div>
           </div>
         </div>
