@@ -47,6 +47,11 @@ type Candidate = {
   match: number;
   image: string;
   accent: string;
+  sources: {
+    granola: string;
+    notion: string;
+    whisper: string;
+  };
   feedback: Feedback[];
 };
 
@@ -249,6 +254,33 @@ const rounds = [
   "Customer scenario",
   "Cross-functional collaboration",
 ];
+const sourceThemes = [
+  {
+    strength: "translated an ambiguous agency problem into a concrete operating plan",
+    concern: "could go deeper on how they measure success after launch",
+    quote: "I want the resident experience to feel boring in the best possible way.",
+  },
+  {
+    strength: "used a recent customer example to show strong judgment under pressure",
+    concern: "needs one more example of influencing without direct authority",
+    quote: "The hard part is not the software, it is earning trust with the team using it.",
+  },
+  {
+    strength: "explained tradeoffs with unusually crisp sequencing and ownership",
+    concern: "may need calibration on how quickly Kaizen expects decisions to move",
+    quote: "I like constraints because they force the real priority to show up.",
+  },
+  {
+    strength: "connected their craft directly to public-sector outcomes",
+    concern: "gave a polished answer, so the panel should probe for messy details",
+    quote: "If a workflow fails, someone in the real world waits longer.",
+  },
+  {
+    strength: "showed strong pattern recognition from prior growth and deployment work",
+    concern: "should clarify how they handle incomplete stakeholder alignment",
+    quote: "A good launch plan makes the scary parts visible early.",
+  },
+];
 
 function slugFor(name: string) {
   return name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
@@ -257,6 +289,7 @@ function slugFor(name: string) {
 const candidates: Candidate[] = teamMembers.map((member, index) => {
   const peerOne = teamMembers[(index + 7) % teamMembers.length];
   const peerTwo = teamMembers[(index + 13) % teamMembers.length];
+  const theme = sourceThemes[index % sourceThemes.length];
 
   return {
     id: slugFor(member.name),
@@ -274,6 +307,15 @@ const candidates: Candidate[] = teamMembers.map((member, index) => {
     match: 72 + ((index * 7) % 27),
     image: member.image,
     accent: accents[index % accents.length],
+    sources: {
+      granola: `Granola captured ${member.name}'s strongest moment: they ${theme.strength}. The notes flag that ${member.title} maps well to the current team need, especially around ${rounds[index % rounds.length].toLowerCase()}. Follow-up: ${theme.concern}.`,
+      notion: `Notion scorecard for ${member.name}: recommended calibration is ${
+        index % 3 === 0 ? "hire-bar confidence" : index % 3 === 1 ? "scope fit" : "team leverage"
+      }. Evidence: ${member.name.split(" ")[0]} gave specific examples, named constraints, and stayed close to user outcomes. Risk to discuss: ${theme.concern}.`,
+      whisper: `Whisper transcript pull quote from ${member.name}: "${theme.quote}" Tone read: ${
+        index % 2 === 0 ? "direct, fast, and comfortable with ambiguity" : "thoughtful, measured, and collaborative"
+      }. The recording suggests the panel should revisit one moment where the answer got abstract and ask for the concrete artifact or decision that followed.`,
+    },
     feedback: [
       {
         author: peerOne.name,
@@ -345,6 +387,9 @@ export default function Home() {
   const [score, setScore] = useState(4);
   const [notes, setNotes] = useState("");
   const [notesOpen, setNotesOpen] = useState(false);
+  const [sourceOpen, setSourceOpen] = useState<keyof Candidate["sources"] | null>(
+    null
+  );
 
   const selected = candidates[index];
   const myFeedback = submitted[selected.id];
@@ -356,6 +401,12 @@ export default function Home() {
     () => Math.round((Object.keys(submitted).length / candidates.length) * 100),
     [submitted]
   );
+
+  const sourceLabels: Record<keyof Candidate["sources"], string> = {
+    granola: "Granola notes",
+    notion: "Notion notes",
+    whisper: "Whisper notes",
+  };
 
   function selectCandidate(nextIndex: number) {
     const normalized = (nextIndex + candidates.length) % candidates.length;
@@ -582,6 +633,19 @@ export default function Home() {
                     {selected.interview}
                   </div>
                 </div>
+
+                <div className="grid grid-cols-3 gap-2">
+                  {(["granola", "notion", "whisper"] as const).map((source) => (
+                    <button
+                      key={source}
+                      type="button"
+                      onClick={() => setSourceOpen(source)}
+                      className="rounded-2xl bg-orange-50 px-3 py-2 text-sm font-black text-slate-800 ring-1 ring-orange-100 transition-colors hover:bg-orange-100"
+                    >
+                      {sourceLabels[source]}
+                    </button>
+                  ))}
+                </div>
               </div>
             </article>
           </div>
@@ -795,6 +859,45 @@ export default function Home() {
                 className="rounded-2xl bg-rose-500 text-white hover:bg-rose-600"
               >
                 Save note
+              </Button>
+            </div>
+          </div>
+        </div>
+      ) : null}
+
+      {sourceOpen ? (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-4">
+          <div className="w-full max-w-2xl rounded-[2rem] bg-white p-5 shadow-2xl">
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <h2 className="text-2xl font-black tracking-tight">
+                  {sourceLabels[sourceOpen]}
+                </h2>
+                <p className="mt-1 text-sm font-semibold text-slate-500">
+                  {selected.name} · {selected.role}
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setSourceOpen(null)}
+                className="flex size-9 items-center justify-center rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200"
+                aria-label="Close source modal"
+              >
+                <X className="size-4" aria-hidden="true" />
+              </button>
+            </div>
+
+            <div className="mt-5 rounded-3xl bg-slate-50 p-5 text-base leading-8 text-slate-700 ring-1 ring-slate-200">
+              {selected.sources[sourceOpen]}
+            </div>
+
+            <div className="mt-5 flex justify-end">
+              <Button
+                type="button"
+                onClick={() => setSourceOpen(null)}
+                className="rounded-2xl bg-rose-500 text-white hover:bg-rose-600"
+              >
+                Done
               </Button>
             </div>
           </div>
