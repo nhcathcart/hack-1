@@ -788,7 +788,7 @@ export default function Home() {
                 </p>
               </div>
 
-              <div className="min-h-0 flex-1 overflow-y-auto pr-1">
+              <div className="min-h-0 flex-1 overflow-y-auto px-1 pb-1 pt-1">
                 <div className="mt-3">
                   <div className="text-style-body-overline text-on-surface-primary-subtle">
                     Overall read
