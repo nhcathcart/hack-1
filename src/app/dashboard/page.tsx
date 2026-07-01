@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
+import { AppTabs } from "@/components/app-tabs";
 import { kindlingData as d } from "@/lib/kindling-data";
 import { HexLineChart, HexStackedBar } from "./charts";
 
@@ -72,6 +73,7 @@ export default function DashboardPage() {
               <p className="text-style-body-caption text-on-surface-primary-subtle">Recruiting Pipeline · Kaizen Labs · from spark to offer</p>
             </div>
           </div>
+          <AppTabs current="/dashboard" />
           <div className="flex-1" />
           <span className="text-style-body-sm inline-flex items-center gap-2 rounded-full border border-stroke-default bg-surface-primary px-3.5 py-2 text-on-surface-primary-default shadow-elevation">
             <span className="size-2 rounded-full" style={{ background: "var(--palette-success-500)", boxShadow: "0 0 0 4px color-mix(in srgb, var(--palette-success-500) 30%, transparent)" }} />
