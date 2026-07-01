@@ -432,7 +432,7 @@ export default function Home() {
         submittedAt: "Just now",
         notes:
           notes.trim() ||
-          "No notes entered. For the demo, this still counts as your read and unlocks the panel.",
+          "No notes entered. For the demo, this still counts as your feedback and unlocks the panel.",
       },
     }));
   }
@@ -448,10 +448,10 @@ export default function Home() {
             </div>
             <div>
               <h1 className="text-2xl font-black tracking-tight md:text-3xl">
-                Talent Crush
+                Kindling
               </h1>
               <p className="mt-1 text-sm font-bold uppercase tracking-wide text-rose-500">
-                Swipe-style interview feedback, without the tiny phone cage
+                Blinded hiring feedback with a little spark
               </p>
             </div>
           </div>
@@ -464,7 +464,7 @@ export default function Home() {
               />
             </div>
             <div className="mt-2 flex justify-between text-xs font-black uppercase tracking-wide text-slate-500">
-              <span>{Object.keys(submitted).length} reviewed</span>
+              <span>{Object.keys(submitted).length} submitted</span>
               <span>{candidates.length} candidates</span>
             </div>
           </div>
@@ -554,7 +554,7 @@ export default function Home() {
                     {selected.stage}
                   </Badge>
                   <div className="rounded-full bg-white/90 px-4 py-2 text-lg font-black text-rose-600 shadow-sm">
-                    {selected.match}% match
+                    {selected.match}% fit
                   </div>
                 </div>
                 <div className="flex h-44 items-center justify-center">
@@ -657,10 +657,10 @@ export default function Home() {
             >
               <div className="shrink-0">
                 <h2 className="text-xl font-black tracking-tight">
-                  Your private read
+                  Your feedback
                 </h2>
                 <p className="mt-1 text-sm font-semibold text-slate-500">
-                  Submit before the rest of the panel unlocks.
+                  Submit your read before the panel unlocks.
                 </p>
               </div>
 
@@ -698,7 +698,7 @@ export default function Home() {
                 <div className="mt-3 rounded-3xl bg-[#fef3c7] p-3 ring-1 ring-amber-200">
                   <div className="flex items-center justify-between">
                     <label htmlFor="score" className="text-sm font-black">
-                      Chemistry score
+                    Score
                     </label>
                     <span className="flex items-center gap-1 rounded-full bg-white px-3 py-1 text-sm font-black text-slate-950 shadow-sm">
                       <Star className="size-4 fill-amber-400 text-amber-400" />
@@ -734,7 +734,7 @@ export default function Home() {
                 className="mt-3 h-10 w-full shrink-0 gap-2 rounded-2xl bg-rose-500 text-sm font-black text-white hover:bg-rose-600"
               >
                 <Send className="size-4" aria-hidden="true" />
-                {myFeedback ? "Update my read" : "Lock read and reveal"}
+                {myFeedback ? "Update feedback" : "Submit and reveal"}
               </Button>
             </form>
 
@@ -742,7 +742,7 @@ export default function Home() {
               <div className="flex shrink-0 items-start justify-between gap-3">
                 <div>
                   <h2 className="text-3xl font-black tracking-tight">
-                    Panel messages
+                    Panel notes
                   </h2>
                   <p className="mt-1 text-sm font-semibold text-slate-500">
                     {myFeedback
@@ -802,10 +802,10 @@ export default function Home() {
                     <div className="flex size-14 items-center justify-center rounded-full bg-white/10">
                       <EyeOff className="size-6" aria-hidden="true" />
                     </div>
-                    <h3 className="mt-4 text-xl font-black">No peeking yet</h3>
+                    <h3 className="mt-4 text-xl font-black">Panel locked</h3>
                     <p className="mt-2 max-w-xs text-sm leading-6 text-white/70">
-                      Submit your own candidate read first. Then everyone else
-                      appears instantly.
+                      Submit your own feedback first. Then everyone else&apos;s
+                      notes appear instantly.
                     </p>
                   </div>
                 )}
@@ -821,17 +821,17 @@ export default function Home() {
             <div className="flex items-start justify-between gap-4">
               <div>
                 <h2 className="text-2xl font-black tracking-tight">
-                  Private note
+                  Feedback note
                 </h2>
                 <p className="mt-1 text-sm font-semibold text-slate-500">
-                  Add detail without crowding the scorecard.
+                  Add context without crowding the scorecard.
                 </p>
               </div>
               <button
                 type="button"
                 onClick={() => setNotesOpen(false)}
                 className="flex size-9 items-center justify-center rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200"
-                aria-label="Close note modal"
+                aria-label="Close feedback note modal"
               >
                 <X className="size-4" aria-hidden="true" />
               </button>
@@ -840,7 +840,7 @@ export default function Home() {
             <textarea
               value={notes}
               onChange={(event) => setNotes(event.target.value)}
-              placeholder="Drop your interview notes before peeking..."
+              placeholder="Add the context you want captured before the panel opens..."
               className="mt-5 min-h-48 w-full resize-none rounded-3xl border-0 bg-slate-50 px-4 py-3 text-sm shadow-inner outline-none ring-1 ring-slate-200 placeholder:text-slate-400 focus-visible:ring-3 focus-visible:ring-rose-200"
             />
 

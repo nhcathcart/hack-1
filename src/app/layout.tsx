@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Interview Quest",
-  description: "A gamified blinded feedback board for interview panels",
+  title: "Kindling",
+  description: "Blinded feedback for interview panels",
 };
 
 export default function RootLayout({
