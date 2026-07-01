@@ -860,28 +860,28 @@ export default function Home() {
       ) : null}
 
       {sourceOpen ? (
-        <div className="fixed inset-0 z-modal flex items-center justify-center bg-surface-overlay p-4">
-          <div className="w-full max-w-lg rounded-3xl border border-stroke-default bg-surface-primary p-5 shadow-elevation">
+        <div className="fixed inset-0 z-500 flex items-center justify-center bg-black/50 p-4">
+          <div className="w-full max-w-lg rounded-3xl border border-stroke-default bg-white p-5 text-slate-950 shadow-2xl">
             <div className="flex items-start justify-between gap-4">
               <div>
-                <h2 className="text-style-header-sm text-on-surface-primary-default">
+                <h2 className="text-style-header-sm text-slate-950">
                   {sourceLabels[sourceOpen]}
                 </h2>
-                <p className="mt-1 text-style-body-sm text-on-surface-primary-subtle">
+                <p className="mt-1 text-style-body-sm text-slate-600">
                   {selected.name} · {selected.role}
                 </p>
               </div>
               <button
                 type="button"
                 onClick={() => setSourceOpen(null)}
-                className="flex size-9 items-center justify-center rounded-full bg-surface-secondary text-on-surface-primary-default hover:bg-surface-secondary-hover"
+                className="flex size-9 items-center justify-center rounded-full bg-slate-100 text-slate-700 hover:bg-slate-200"
                 aria-label="Close source modal"
               >
                 <X className="size-4" aria-hidden="true" />
               </button>
             </div>
 
-            <div className="mt-5 rounded-2xl border border-stroke-default bg-surface-secondary p-5 text-style-body-lg text-on-surface-primary-subtle">
+            <div className="mt-5 rounded-2xl border border-slate-200 bg-slate-50 p-5 text-style-body-lg text-slate-700">
               {selected.sources[sourceOpen]}
             </div>
 
