@@ -776,7 +776,7 @@ export default function Home() {
 
           <aside className="grid min-h-0 grid-rows-2 gap-4">
             <form
-              className="flex min-h-0 flex-col overflow-hidden rounded-3xl border border-stroke-default bg-surface-primary p-4 shadow-elevation"
+              className="flex min-h-0 flex-col overflow-hidden rounded-3xl border border-stroke-default bg-surface-primary p-5 shadow-elevation"
               onSubmit={submitFeedback}
             >
               <div className="shrink-0">
