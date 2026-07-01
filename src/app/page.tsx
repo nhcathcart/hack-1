@@ -13,7 +13,6 @@ import {
   MapPin,
   MessageCircle,
   Send,
-  Sparkles,
   Star,
   X,
 } from "lucide-react";
@@ -443,8 +442,15 @@ export default function Home() {
         <header className="shrink-0 rounded-[2rem] bg-white/85 p-4 shadow-xl ring-1 ring-orange-100">
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div className="flex items-center gap-4">
-            <div className="flex size-12 items-center justify-center rounded-2xl bg-rose-500 text-white shadow-lg">
-              <Sparkles className="size-6" aria-hidden="true" />
+            <div className="relative size-14 overflow-hidden rounded-2xl bg-white shadow-lg ring-1 ring-orange-100">
+              <Image
+                src="/kindling-logo.png"
+                alt="Kindling logo"
+                fill
+                priority
+                sizes="56px"
+                className="object-cover"
+              />
             </div>
             <div>
               <h1 className="text-2xl font-black tracking-tight md:text-3xl">
