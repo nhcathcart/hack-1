@@ -76,7 +76,7 @@ export default function DashboardPage() {
           <AppTabs current="/dashboard" />
           <div className="flex-1" />
           <span className="text-style-body-sm inline-flex items-center gap-2 rounded-full border border-stroke-default bg-surface-primary px-3.5 py-2 text-on-surface-primary-default shadow-elevation">
-            <span className="size-2 rounded-full" style={{ background: "var(--palette-success-500)", boxShadow: "0 0 0 4px color-mix(in srgb, var(--palette-success-500) 30%, transparent)" }} />
+            <span className="size-2 rounded-full" style={{ background: "var(--brand-spark)", boxShadow: "0 0 0 4px color-mix(in srgb, var(--brand-spark) 45%, transparent)" }} />
             Live from Ashby
           </span>
           <span className="text-style-body-sm hidden rounded-full bg-surface-inverse px-3.5 py-2 text-on-surface-inverse-subtle sm:inline-block">
@@ -262,8 +262,8 @@ export default function DashboardPage() {
           <img src="/kindling-logo.svg" alt="" width={22} height={24} className="shrink-0" />
           <div className="text-style-body-sm text-on-surface-inverse-subtle">
             <span className="text-on-surface-inverse-default" style={{ fontWeight: 600 }}>Fed by Ashby, rendered by Kindling.</span> Every number is driven by a single{" "}
-            <span className="text-style-body-code text-on-surface-inverse-default">kindlingData</span> object in{" "}
-            <span className="text-style-body-code text-on-surface-inverse-default">src/lib/kindling-data.ts</span> — point it at the Ashby export and the whole board re-renders.
+            <span className="text-style-body-code" style={{ color: "var(--brand-spark)" }}>kindlingData</span> object in{" "}
+            <span className="text-style-body-code" style={{ color: "var(--brand-spark)" }}>src/lib/kindling-data.ts</span> — point it at the Ashby export and the whole board re-renders.
           </div>
         </div>
       </div>
