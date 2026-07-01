@@ -14,6 +14,7 @@ import {
   X,
 } from "lucide-react";
 
+import { AppTabs } from "@/components/app-tabs";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -574,6 +575,8 @@ export default function Home() {
               </p>
             </div>
           </div>
+
+          <AppTabs current="/" />
 
           <div className="min-w-64">
             <div className="rounded-full bg-surface-tertiary p-1">

@@ -22,25 +22,60 @@
  */
 
 /*
- * Kaizen brand layer — pulls the app toward kaizenlabs.co: deep forest-green
- * (#043B30) immersive panels + primary actions, warm cream surfaces, and
- * deep-green tone-on-tone text. Overriding UDS semantic tokens at :root
- * rebrands every bg-surface-inverse / bg-button-primary / bg-surface-secondary
- * / text-on-* usage at once — the supported UDS consumer override path.
+ * Kaizen brand layer — mimics kaizenlabs.co: playful + light. White base
+ * (secondary = white), FOREST-GREEN #0A322A primary + immersive panels, warm
+ * cream fills, deep-green tone-on-tone text, the signature LIME #C3F831 pop
+ * (routed through the success/positive slot + a --brand-spark accent), and
+ * generous playful corner rounding. Overriding UDS semantic tokens at :root
+ * rebrands every bg-surface-* / bg-button-* / text-on-* / rounded-* usage at
+ * once — the supported UDS consumer override path.
  */
 :root {
-  --color-surface-inverse: #043b30;
-  --color-on-surface-inverse-default: #f5f2ea;
-  --color-on-surface-inverse-subtle: #9fb8ac;
+  /* Forest-green primary + immersive panels */
+  --color-surface-inverse: #0a322a;
+  --color-on-surface-inverse-default: #ffffff;
+  --color-on-surface-inverse-subtle: #a9c6b8;
 
-  --color-button-primary: #043b30;
+  --color-button-primary: #0a322a;
   --color-button-primary-hover: #062620;
 
-  --color-surface-secondary: #f2eee2;
-  --color-surface-secondary-hover: #e9e2d0;
-  --color-surface-tertiary: #ece5d4;
+  /* Light + white base; warm cream fills */
+  --color-surface-secondary: #ffffff;
+  --color-surface-secondary-hover: #f7f0ea;
+  --color-surface-tertiary: #f4efe4;
 
+  /* Deep forest-green text + warm hairlines */
   --color-on-surface-primary-default: #062620;
   --color-on-surface-secondary-default: #062620;
-  --color-stroke-emphasis: #043b30;
+  --color-stroke-default: #ece5d7;
+  --color-stroke-emphasis: #0a322a;
+
+  /* Lime "spark" pop routed through the success / positive slot */
+  --color-surface-success: #eef8cf;
+  --color-on-surface-success: #3f5814;
+
+  /* Playful, generous corner rounding */
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-2xl: 26px;
+  --radius-3xl: 34px;
+
+  /* Kaizen lime — playful accent for sparks / highlights */
+  --brand-spark: #c3f831;
+}
+
+/*
+ * Kindling ember scale — the dashboard's one domain accent ("from spark to
+ * offer"). Sourced entirely from UDS primitives (amber → danger) so it inherits
+ * the Canopy ramps and flips with .dark alongside the rest of the system. These
+ * are plain custom properties consumed by the /dashboard SVG/inline styles and
+ * src/lib/kindling-data.ts; they do NOT touch the UDS --color-*/--radius-*/
+ * --font-* namespaces, so the UDS @theme reset is unaffected.
+ */
+:root {
+  --ember-1: var(--palette-amber-400);
+  --ember-2: var(--palette-amber-500);
+  --ember-3: var(--palette-amber-600);
+  --ember-4: var(--palette-danger-600);
+  --ember-5: var(--palette-danger-700);
 }
