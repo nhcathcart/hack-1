@@ -4,12 +4,13 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 
 /**
- * Top-level app navigation. The feedback board and the Kindling recruiting
- * dashboard are two views of the same app; "Admin" opens the dashboard.
+ * Top-level app navigation. The interviewer feedback board and the Kindling
+ * recruiting dashboard are two views of the same app: "Interviewer" is the
+ * blinded-feedback board (colleague's main page), "Admin" opens the dashboard.
  * Styled entirely in UDS tokens so it inherits the Kaizen brand override.
  */
 const TABS = [
-  { href: "/", label: "Feedback" },
+  { href: "/", label: "Interviewer" },
   { href: "/dashboard", label: "Admin" },
 ] as const;
 
