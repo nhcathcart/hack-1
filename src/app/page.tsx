@@ -344,6 +344,7 @@ export default function Home() {
   const [decision, setDecision] = useState<Decision>("Like");
   const [score, setScore] = useState(4);
   const [notes, setNotes] = useState("");
+  const [notesOpen, setNotesOpen] = useState(false);
 
   const selected = candidates[index];
   const myFeedback = submitted[selected.id];
@@ -419,7 +420,7 @@ export default function Home() {
           </div>
         </header>
 
-        <section className="grid min-h-0 flex-1 gap-4 lg:grid-cols-[1fr_410px]">
+        <section className="grid min-h-0 flex-1 gap-4 lg:grid-cols-[1fr_480px]">
           <div className="grid min-h-0 gap-4 overflow-hidden xl:grid-cols-[340px_1fr]">
             <aside className="flex min-h-0 flex-col rounded-[2rem] bg-white/85 p-4 shadow-xl ring-1 ring-orange-100">
               <div className="mb-3 flex shrink-0 items-center justify-between">
@@ -445,7 +446,7 @@ export default function Home() {
                       type="button"
                       onClick={() => selectCandidate(candidateIndex)}
                       className={cn(
-                        "rounded-3xl p-3 text-left transition-transform hover:-translate-y-0.5",
+                        "block w-full rounded-3xl p-3 text-left transition-transform hover:-translate-y-0.5",
                         isSelected
                           ? "bg-slate-950 text-white shadow-xl"
                           : "bg-white text-slate-950 ring-1 ring-slate-200"
@@ -585,13 +586,13 @@ export default function Home() {
             </article>
           </div>
 
-          <aside className="grid min-h-0 grid-rows-[auto_1fr] gap-4">
+          <aside className="grid min-h-0 grid-rows-2 gap-4">
             <form
-              className="rounded-[2rem] bg-white p-4 shadow-xl ring-1 ring-orange-100"
+              className="flex min-h-0 flex-col overflow-hidden rounded-[2rem] bg-white p-4 shadow-xl ring-1 ring-orange-100"
               onSubmit={submitFeedback}
             >
-              <div>
-                <h2 className="text-2xl font-black tracking-tight">
+              <div className="shrink-0">
+                <h2 className="text-xl font-black tracking-tight">
                   Your private read
                 </h2>
                 <p className="mt-1 text-sm font-semibold text-slate-500">
@@ -599,78 +600,84 @@ export default function Home() {
                 </p>
               </div>
 
-              <div className="mt-4 grid grid-cols-2 gap-2">
-                {decisionOptions.map((option) => {
-                  const Icon = option.icon;
+              <div className="min-h-0 flex-1 overflow-y-auto pr-1">
+                <div className="mt-3 grid grid-cols-4 gap-2">
+                  {decisionOptions.map((option) => {
+                    const Icon = option.icon;
 
-                  return (
-                    <button
-                      key={option.value}
-                      type="button"
-                      onClick={() => setDecision(option.value)}
-                      className={cn(
-                        "flex h-14 items-center justify-center gap-2 rounded-2xl border-2 text-sm font-black transition-transform hover:-translate-y-0.5",
-                        option.className,
-                        decision === option.value
-                          ? "border-slate-950 shadow-[4px_4px_0_#0f172a]"
-                          : "border-transparent"
-                      )}
-                    >
-                      <Icon
+                    return (
+                      <button
+                        key={option.value}
+                        type="button"
+                        onClick={() => setDecision(option.value)}
                         className={cn(
-                          "size-5",
-                          option.value === "Love" ? "fill-current" : ""
+                          "flex h-11 items-center justify-center gap-1.5 rounded-2xl border-2 text-xs font-black transition-transform hover:-translate-y-0.5",
+                          option.className,
+                          decision === option.value
+                            ? "border-slate-950 shadow-[3px_3px_0_#0f172a]"
+                            : "border-transparent"
                         )}
-                        aria-hidden="true"
-                      />
-                      {option.label}
-                    </button>
-                  );
-                })}
-              </div>
-
-              <div className="mt-4 rounded-3xl bg-[#fef3c7] p-3 ring-1 ring-amber-200">
-                <div className="flex items-center justify-between">
-                  <label htmlFor="score" className="text-sm font-black">
-                    Chemistry score
-                  </label>
-                  <span className="flex items-center gap-1 rounded-full bg-white px-3 py-1 text-sm font-black text-slate-950 shadow-sm">
-                    <Star className="size-4 fill-amber-400 text-amber-400" />
-                    {score}/5
-                  </span>
+                      >
+                        <Icon
+                          className={cn(
+                            "size-4",
+                            option.value === "Love" ? "fill-current" : ""
+                          )}
+                          aria-hidden="true"
+                        />
+                        {option.label}
+                      </button>
+                    );
+                  })}
                 </div>
-                <input
-                  id="score"
-                  type="range"
-                  min="1"
-                  max="5"
-                  value={score}
-                  onChange={(event) => setScore(Number(event.target.value))}
-                  className="mt-2 w-full accent-rose-500"
-                />
-              </div>
 
-              <textarea
-                value={notes}
-                onChange={(event) => setNotes(event.target.value)}
-                placeholder="Drop your interview notes before peeking..."
-                className="mt-4 min-h-20 w-full resize-none rounded-3xl border-0 bg-slate-50 px-4 py-3 text-sm shadow-inner outline-none ring-1 ring-slate-200 placeholder:text-slate-400 focus-visible:ring-3 focus-visible:ring-rose-200"
-              />
+                <div className="mt-3 rounded-3xl bg-[#fef3c7] p-3 ring-1 ring-amber-200">
+                  <div className="flex items-center justify-between">
+                    <label htmlFor="score" className="text-sm font-black">
+                      Chemistry score
+                    </label>
+                    <span className="flex items-center gap-1 rounded-full bg-white px-3 py-1 text-sm font-black text-slate-950 shadow-sm">
+                      <Star className="size-4 fill-amber-400 text-amber-400" />
+                      {score}/5
+                    </span>
+                  </div>
+                  <input
+                    id="score"
+                    type="range"
+                    min="1"
+                    max="5"
+                    value={score}
+                    onChange={(event) => setScore(Number(event.target.value))}
+                    className="mt-2 w-full accent-rose-500"
+                  />
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => setNotesOpen(true)}
+                  className="mt-3 flex h-10 w-full items-center justify-between rounded-2xl bg-slate-50 px-4 text-left text-sm font-black text-slate-700 ring-1 ring-slate-200 transition-colors hover:bg-slate-100"
+                >
+                  <span>Add notes</span>
+                  <span className="text-xs font-bold text-slate-400">
+                    {notes.trim() ? "Added" : "Optional"}
+                  </span>
+                </button>
+              </div>
 
               <Button
                 type="submit"
                 size="lg"
-                className="mt-4 h-11 w-full gap-2 rounded-2xl bg-rose-500 text-base font-black text-white hover:bg-rose-600"
+                className="mt-3 h-10 w-full shrink-0 gap-2 rounded-2xl bg-rose-500 text-sm font-black text-white hover:bg-rose-600"
               >
                 <Send className="size-4" aria-hidden="true" />
                 {myFeedback ? "Update my read" : "Lock read and reveal"}
               </Button>
             </form>
 
-            <section className="flex min-h-0 flex-col rounded-[2rem] bg-white p-4 shadow-xl ring-1 ring-orange-100">
+            <section className="flex min-h-0 flex-col rounded-[2rem] bg-white p-5 shadow-xl ring-1 ring-orange-100">
               <div className="flex shrink-0 items-start justify-between gap-3">
                 <div>
-                  <h2 className="text-2xl font-black tracking-tight">
+                  <h2 className="text-3xl font-black tracking-tight">
                     Panel messages
                   </h2>
                   <p className="mt-1 text-sm font-semibold text-slate-500">
@@ -701,8 +708,8 @@ export default function Home() {
                   <div className="space-y-4">
                     {visibleFeedback.map((item, itemIndex) => (
                       <div key={`${item.author}-${item.round}`}>
-                        {itemIndex > 0 ? <Separator className="mb-4" /> : null}
-                        <article className="space-y-3">
+                        {itemIndex > 0 ? <Separator className="mb-3" /> : null}
+                        <article className="space-y-2 rounded-3xl bg-slate-50 p-4">
                           <div className="flex flex-wrap items-start justify-between gap-3">
                             <div>
                               <div className="font-black">{item.author}</div>
@@ -719,7 +726,7 @@ export default function Home() {
                               {item.decision} · {item.score}/5
                             </span>
                           </div>
-                          <p className="text-sm leading-6 text-slate-700">
+                          <p className="text-sm leading-5 text-slate-700">
                             {item.notes}
                           </p>
                         </article>
@@ -727,7 +734,7 @@ export default function Home() {
                     ))}
                   </div>
                 ) : (
-                  <div className="flex min-h-56 flex-col items-center justify-center rounded-3xl bg-slate-950 p-8 text-center text-white">
+                  <div className="flex min-h-full flex-col items-center justify-center rounded-3xl bg-slate-950 p-6 text-center text-white">
                     <div className="flex size-14 items-center justify-center rounded-full bg-white/10">
                       <EyeOff className="size-6" aria-hidden="true" />
                     </div>
@@ -743,6 +750,56 @@ export default function Home() {
           </aside>
         </section>
       </div>
+
+      {notesOpen ? (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-4">
+          <div className="w-full max-w-xl rounded-[2rem] bg-white p-5 shadow-2xl">
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <h2 className="text-2xl font-black tracking-tight">
+                  Private note
+                </h2>
+                <p className="mt-1 text-sm font-semibold text-slate-500">
+                  Add detail without crowding the scorecard.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setNotesOpen(false)}
+                className="flex size-9 items-center justify-center rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200"
+                aria-label="Close note modal"
+              >
+                <X className="size-4" aria-hidden="true" />
+              </button>
+            </div>
+
+            <textarea
+              value={notes}
+              onChange={(event) => setNotes(event.target.value)}
+              placeholder="Drop your interview notes before peeking..."
+              className="mt-5 min-h-48 w-full resize-none rounded-3xl border-0 bg-slate-50 px-4 py-3 text-sm shadow-inner outline-none ring-1 ring-slate-200 placeholder:text-slate-400 focus-visible:ring-3 focus-visible:ring-rose-200"
+            />
+
+            <div className="mt-5 flex justify-end gap-3">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setNotes("")}
+                className="rounded-2xl"
+              >
+                Clear
+              </Button>
+              <Button
+                type="button"
+                onClick={() => setNotesOpen(false)}
+                className="rounded-2xl bg-rose-500 text-white hover:bg-rose-600"
+              >
+                Save note
+              </Button>
+            </div>
+          </div>
+        </div>
+      ) : null}
     </main>
   );
 }
