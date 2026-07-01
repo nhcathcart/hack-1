@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "hack-1",
-  description: "Next.js app with shadcn/ui",
+  title: "Interview Quest",
+  description: "A gamified blinded feedback board for interview panels",
 };
 
 export default function RootLayout({
