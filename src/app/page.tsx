@@ -470,7 +470,7 @@ export default function Home() {
         <section className="grid min-h-0 flex-1 gap-4 lg:grid-cols-[1fr_480px]">
           <div className="grid min-h-0 gap-4 overflow-hidden xl:grid-cols-[340px_1fr]">
             <aside className="flex min-h-0 flex-col rounded-3xl border border-stroke-default bg-surface-primary p-4 shadow-elevation">
-              <div className="mb-3 flex shrink-0 items-center justify-between">
+              <div className="mb-3 flex shrink-0 items-center justify-between border-b border-stroke-default pb-3">
                 <div>
                   <div className="text-lg font-black text-on-surface-primary-default">
                     Candidate stack
@@ -484,7 +484,7 @@ export default function Home() {
                 </Badge>
               </div>
 
-              <div className="min-h-0 flex-1 space-y-3 overflow-y-auto pr-1">
+              <div className="min-h-0 flex-1 space-y-3 overflow-y-auto px-1 pb-1 pt-1">
                 {candidates.map((candidate, candidateIndex) => {
                   const isSelected = candidate.id === selected.id;
                   const isUnlocked = Boolean(submitted[candidate.id]);
